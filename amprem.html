@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#5b7cfa">
+<title>AM TOOLS — RafaXMods</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+html{scroll-behavior:smooth;}
+
+h1,h2,.brand,.btn,label{font-family:'Sora',sans-serif;}
+.mono{font-family:'JetBrains Mono',monospace;}
+
+body{
+  background:#05060d;
+  color:#f4f6ff;
+  min-height:100vh;
+  overflow-x:hidden;
+  position:relative;
+}
+
+/* ===== ANIMATED BACKGROUND ===== */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(ellipse 55% 40% at 20% -10%, rgba(91,124,250,.32), transparent 60%),
+    radial-gradient(ellipse 60% 45% at 100% 20%, rgba(124,147,255,.22), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 30% 110%, rgba(91,124,250,.20), transparent 60%),
+    radial-gradient(ellipse 40% 35% at 80% 80%, rgba(247,201,72,.08), transparent 55%);
+  z-index:-3;
+  animation:bgPulse 8s ease-in-out infinite alternate;
+}
+@keyframes bgPulse{
+  0%{filter:brightness(1);}
+  100%{filter:brightness(1.15);}
+}
+
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(124,147,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(124,147,255,.05) 1px,transparent 1px);
+  background-size:46px 46px;
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,#000 20%,transparent 80%);
+  z-index:-2;
+  pointer-events:none;
+}
+
+/* Floating orbs */
+.orb{
+  position:fixed;
+  border-radius:50%;
+  filter:blur(80px);
+  opacity:.35;
+  z-index:-1;
+  pointer-events:none;
+}
+.orb-1{
+  width:300px;height:300px;
+  background:rgba(91,124,250,.5);
+  top:-5%;left:-5%;
+  animation:floatOrb1 12s ease-in-out infinite;
+}
+.orb-2{
+  width:250px;height:250px;
+  background:rgba(124,147,255,.4);
+  top:40%;right:-8%;
+  animation:floatOrb2 15s ease-in-out infinite;
+}
+.orb-3{
+  width:200px;height:200px;
+  background:rgba(247,201,72,.25);
+  bottom:10%;left:15%;
+  animation:floatOrb3 10s ease-in-out infinite;
+}
+@keyframes floatOrb1{
+  0%,100%{transform:translate(0,0) scale(1);}
+  33%{transform:translate(40px,30px) scale(1.1);}
+  66%{transform:translate(-20px,50px) scale(.95);}
+}
+@keyframes floatOrb2{
+  0%,100%{transform:translate(0,0) scale(1);}
+  50%{transform:translate(-30px,-40px) scale(1.15);}
+}
+@keyframes floatOrb3{
+  0%,100%{transform:translate(0,0) scale(1);}
+  50%{transform:translate(50px,-30px) scale(1.1);}
+}
+
+/* ===== NAV ===== */
+.nav{
+  max-width:1280px;
+  margin:0 auto;
+  padding:24px 28px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-weight:700;
+  font-size:15px;
+  letter-spacing:.3px;
+}
+
+.btn-back{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  font-size:17px;
+  text-decoration:none;
+  background:linear-gradient(145deg,#1a2044,#0e1230);
+  border:1px solid rgba(124,147,255,.35);
+  box-shadow:0 0 20px rgba(91,124,250,.25), inset 0 1px 0 rgba(255,255,255,.06);
+  transition:all .3s cubic-bezier(.4,0,.2,1);
+  color:#fff;
+  flex-shrink:0;
+  position:relative;
+  overflow:hidden;
+}
+.btn-back::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(91,124,250,.2),transparent);
+  opacity:0;
+  transition:opacity .3s;
+}
+.btn-back:hover::after{opacity:1;}
+.btn-back:hover{
+  transform:translateY(-3px) scale(1.05);
+  box-shadow:0 10px 28px rgba(91,124,250,.5), 0 0 40px rgba(91,124,250,.15);
+  border-color:rgba(124,147,255,.6);
+}
+
+.nav-left{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.brand .mark{
+  width:36px;height:36px;
+  border-radius:10px;
+  background:linear-gradient(145deg,#1a1f3a,#0d1020);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px rgba(91,124,250,.3), 0 0 0 1px rgba(124,147,255,.2);
+  flex-shrink:0;
+  overflow:hidden;
+  position:relative;
+}
+.brand .mark::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(91,124,250,.15),transparent);
+}
+.brand .mark svg{
+  width:20px;height:20px;
+  color:#7c93ff;
+  position:relative;
+  z-index:1;
+}
+.brand span.sub{color:#6b729a;font-weight:500;font-size:12px;margin-left:2px;}
+
+.nav-status{
+  display:flex;align-items:center;gap:8px;
+  font-size:11.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  color:#7dd3a8;
+  background:rgba(125,211,168,.08);
+  border:1px solid rgba(125,211,168,.25);
+  padding:8px 14px;border-radius:100px;
+  box-shadow:0 0 12px rgba(125,211,168,.1);
+  transition:all .3s;
+}
+.nav-status:hover{
+  box-shadow:0 0 20px rgba(125,211,168,.2);
+  border-color:rgba(125,211,168,.4);
+}
+.nav-status .dot{width:6px;height:6px;border-radius:50%;background:#7dd3a8;box-shadow:0 0 8px #7dd3a8;animation:pulse-dot 2s ease-in-out infinite;}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.35;transform:scale(.8);}}
+
+/* ===== HERO ===== */
+.hero{
+  max-width:900px;
+  margin:0 auto;
+  padding:14px 24px 4px;
+  text-align:center;
+}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;
+  color:#a5b4ff;
+  background:rgba(91,124,250,.1);
+  border:1px solid rgba(124,147,255,.3);
+  padding:7px 16px 7px 12px;border-radius:100px;
+  margin-bottom:22px;
+  box-shadow:0 4px 20px rgba(91,124,250,.1);
+  animation:badgeGlow 3s ease-in-out infinite alternate;
+}
+@keyframes badgeGlow{
+  0%{box-shadow:0 4px 20px rgba(91,124,250,.1);}
+  100%{box-shadow:0 4px 30px rgba(91,124,250,.25), 0 0 20px rgba(91,124,250,.1);}
+}
+.hero-badge svg{width:13px;height:13px;}
+
+.hero h1{
+  font-size:clamp(26px,4vw,42px);
+  font-weight:800;
+  line-height:1.1;
+  letter-spacing:-1.2px;
+  background:linear-gradient(90deg,#e2e6ff,#a5b4ff 40%,#5b7cfa 70%,#f7c948);
+  background-size:200% auto;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  margin-bottom:12px;
+  animation:textShine 4s linear infinite;
+}
+@keyframes textShine{
+  0%{background-position:0% center;}
+  100%{background-position:200% center;}
+}
+
+.hero p{
+  max-width:520px;
+  margin:0 auto;
+  color:#8b93b8;
+  font-size:14px;
+  line-height:1.7;
+}
+
+/* ===== WORKSPACE ===== */
+.workspace{
+  max-width:800px;
+  margin:30px auto 0;
+  padding:0 24px 56px;
+}
+
+.panel{
+  position:relative;
+  border-radius:24px;
+  background:linear-gradient(160deg,rgba(18,22,48,.8),rgba(8,11,26,.9));
+  border:1px solid rgba(124,147,255,.22);
+  box-shadow:
+    0 0 60px rgba(91,124,250,.12),
+    0 20px 50px rgba(0,0,0,.5),
+    inset 0 1px 0 rgba(255,255,255,.04);
+  backdrop-filter:blur(20px);
+  overflow:hidden;
+  margin-bottom:24px;
+}
+
+/* Animated border glow */
+.panel::before{
+  content:'';
+  position:absolute;
+  top:0;left:-100%;right:-100%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(124,147,255,.8),#a5b4ff,rgba(124,147,255,.8),transparent);
+  animation:borderSlide 4s linear infinite;
+}
+@keyframes borderSlide{
+  0%{transform:translateX(-50%);}
+  100%{transform:translateX(50%);}
+}
+
+.panel::after{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;bottom:0;
+  border-radius:24px;
+  padding:1.5px;
+  background:linear-gradient(180deg,rgba(124,147,255,.4),transparent 40%,transparent 60%,rgba(91,124,250,.15));
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  pointer-events:none;
+  opacity:.6;
+}
+
+.panel-body{
+  padding:28px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:22px;
+  position:relative;
+  z-index:1;
+}
+
+/* ===== BUTTON ===== */
+.btn{
+  border:none;
+  border-radius:16px;
+  padding:14px 30px;
+  font-size:14.5px;
+  font-weight:700;
+  letter-spacing:.3px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  white-space:nowrap;
+  transition:all .3s cubic-bezier(.4,0,.2,1);
+  background:linear-gradient(145deg,#5b7cfa,#324adf);
+  color:#fff;
+  box-shadow:0 10px 26px rgba(91,124,250,.4), 0 0 0 1px rgba(124,147,255,.3);
+  position:relative;
+  overflow:hidden;
+  width:100%;
+}
+.btn::before{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);
+  transform:translateX(-120%);
+  transition:transform .7s ease;
+}
+.btn:hover::before{transform:translateX(120%);}
+.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 35px rgba(91,124,250,.6), 0 0 30px rgba(91,124,250,.2), 0 0 0 1px rgba(124,147,255,.5);
+}
+.btn:active{transform:translateY(0) scale(.98);}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn svg{width:17px;height:17px;flex-shrink:0;}
+
+.btn-secondary{
+  background:linear-gradient(145deg,#1a2044,#0e1230);
+  border:1px solid rgba(124,147,255,.35);
+  box-shadow:0 0 20px rgba(91,124,250,.25), inset 0 1px 0 rgba(255,255,255,.06);
+}
+.btn-secondary:hover{
+  box-shadow:0 10px 28px rgba(91,124,250,.5), 0 0 40px rgba(91,124,250,.15);
+  border-color:rgba(124,147,255,.6);
+}
+
+/* ===== INPUT ===== */
+.input-group{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.input-group label{
+  font-size:12.5px;
+  font-weight:600;
+  color:#a5b4ff;
+  letter-spacing:.5px;
+}
+.input-field{
+  width:100%;
+  padding:14px 18px;
+  border-radius:14px;
+  border:1px solid rgba(124,147,255,.25);
+  background:rgba(9,12,26,.55);
+  color:#e2e6ff;
+  font-size:14px;
+  font-family:'Inter',sans-serif;
+  outline:none;
+  transition:all .3s cubic-bezier(.4,0,.2,1);
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.3);
+}
+.input-field::placeholder{color:#4c5280;font-size:13px;}
+.input-field:focus{
+  border-color:rgba(124,147,255,.7);
+  box-shadow:0 0 20px rgba(91,124,250,.15), inset 0 2px 6px rgba(0,0,0,.3);
+  background:rgba(9,12,26,.7);
+}
+
+/* ===== TOGGLE TABS ===== */
+.tab-bar{
+  display:flex;
+  gap:8px;
+  margin-bottom:4px;
+}
+.tab-btn{
+  flex:1;
+  padding:12px 16px;
+  border-radius:14px;
+  border:1px solid rgba(124,147,255,.2);
+  background:rgba(9,12,26,.4);
+  color:#8b93b8;
+  font-family:'Sora',sans-serif;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .3s cubic-bezier(.4,0,.2,1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+.tab-btn:hover{
+  background:rgba(124,147,255,.1);
+  border-color:rgba(124,147,255,.4);
+  color:#c7d1ff;
+}
+.tab-btn.active{
+  background:linear-gradient(145deg,rgba(91,124,250,.2),rgba(91,124,250,.08));
+  border-color:rgba(124,147,255,.5);
+  color:#e2e6ff;
+  box-shadow:0 4px 20px rgba(91,124,250,.2);
+}
+.tab-btn svg{width:15px;height:15px;}
+
+/* ===== STAGE ===== */
+.stage{
+  border-radius:18px;
+  background:rgba(5,6,13,.55);
+  border:1px solid rgba(255,255,255,.06);
+  min-height:200px;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  padding:20px;
+  overflow:hidden;
+}
+
+/* Animated corners */
+.stage::before,.stage::after,.corner-bl,.corner-br{
+  content:'';position:absolute;width:24px;height:24px;
+  border:2px solid rgba(124,147,255,.5);opacity:.9;
+  transition:all .3s;
+}
+.stage::before{top:14px;left:14px;border-right:none;border-bottom:none;border-top-left-radius:10px;}
+.stage::after{top:14px;right:14px;border-left:none;border-bottom:none;border-top-right-radius:10px;}
+.corner-bl{bottom:14px;left:14px;border-right:none;border-top:none;border-bottom-left-radius:10px;}
+.corner-br{bottom:14px;right:14px;border-left:none;border-top:none;border-bottom-right-radius:10px;}
+
+.stage:hover::before,.stage:hover::after,.stage:hover .corner-bl,.stage:hover .corner-br{
+  border-color:rgba(124,147,255,.8);
+  box-shadow:0 0 15px rgba(91,124,250,.3);
+}
+
+.stage-head{
+  display:flex;align-items:center;gap:8px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;
+  color:#6b729a;
+  margin-bottom:16px;
+  z-index:2;
+}
+
+.placeholder{
+  text-align:center;
+  color:#8b93b8;
+  font-size:15px;
+  line-height:1.8;
+  max-width:300px;
+  margin:auto;
+}
+.placeholder-icon{
+  width:64px;height:64px;
+  margin:0 auto 20px;
+  border-radius:22px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(145deg,rgba(91,124,250,.18),rgba(91,124,250,.04));
+  border:1px solid rgba(124,147,255,.3);
+  box-shadow:0 4px 20px rgba(91,124,250,.15);
+  animation:floatIcon 3s ease-in-out infinite;
+}
+@keyframes floatIcon{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-6px);}
+}
+.placeholder-icon svg{width:30px;height:30px;color:#7c93ff;}
+.placeholder strong{
+  display:block;color:#e2e6ff;font-family:'Sora',sans-serif;
+  font-size:16px;font-weight:700;margin-bottom:6px;
+}
+
+/* ===== LOADING ===== */
+.loading{
+  position:absolute;inset:0;
+  background:rgba(5,6,13,.92);
+  backdrop-filter:blur(8px);
+  display:none;
+  flex-direction:column;
+  align-items:center;justify-content:center;
+  border-radius:18px;
+  z-index:5;
+}
+.loading::before{
+  content:'';position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,#5b7cfa,#a5b4ff,transparent);
+  box-shadow:0 0 15px 2px rgba(91,124,250,.8);
+  animation:scanline 2.5s ease-in-out infinite;
+}
+@keyframes scanline{0%{top:12%;opacity:0;}10%{opacity:1;}90%{opacity:1;}100%{top:88%;opacity:0;}}
+
+/* Multi-ring loader */
+.loader-wrap{
+  position:relative;
+  width:56px;height:56px;
+  margin-bottom:20px;
+}
+.loader-wrap .ring{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  border:3px solid transparent;
+  border-top-color:#5b7cfa;
+  animation:spin 1.2s linear infinite;
+}
+.loader-wrap .ring:nth-child(2){
+  inset:6px;
+  border-top-color:#a5b4ff;
+  animation:spin 1.8s linear infinite reverse;
+}
+.loader-wrap .ring:nth-child(3){
+  inset:12px;
+  border-top-color:#7c93ff;
+  animation:spin 2.4s linear infinite;
+}
+.loader-wrap::after{
+  content:'';
+  position:absolute;
+  inset:18px;
+  border-radius:50%;
+  background:rgba(91,124,250,.15);
+  box-shadow:0 0 20px rgba(91,124,250,.3);
+  animation:pulseCore 2s ease-in-out infinite;
+}
+@keyframes pulseCore{
+  0%,100%{transform:scale(1);opacity:.7;}
+  50%{transform:scale(1.2);opacity:1;}
+}
+@keyframes spin{100%{transform:rotate(360deg);}}
+
+.loading p{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;margin-bottom:5px;}
+.loading span{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#6b729a;letter-spacing:.5px;}
+
+/* ===== RESULT ===== */
+#resultBox{display:none;width:100%;animation:pop .6s cubic-bezier(.4,0,.2,1);}
+@keyframes pop{0%{transform:scale(.94) translateY(10px);opacity:0;}100%{transform:scale(1) translateY(0);opacity:1;}}
+
+.result-card{
+  background:rgba(9,12,26,.6);
+  border:1px solid rgba(124,147,255,.2);
+  border-radius:16px;
+  padding:20px;
+  margin-top:8px;
+  box-shadow:0 4px 20px rgba(0,0,0,.3);
+  animation:resultGlow 3s ease-in-out infinite alternate;
+}
+@keyframes resultGlow{
+  0%{box-shadow:0 4px 20px rgba(0,0,0,.3);}
+  100%{box-shadow:0 4px 30px rgba(91,124,250,.15), 0 0 0 1px rgba(124,147,255,.25);}
+}
+
+.result-header{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:14px;
+  padding-bottom:12px;
+  border-bottom:1px solid rgba(124,147,255,.15);
+}
+.result-header svg{width:18px;height:18px;color:#7dd3a8;}
+.result-header h3{
+  font-family:'Sora',sans-serif;
+  font-size:14px;
+  font-weight:700;
+  color:#7dd3a8;
+}
+
+.result-body{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12.5px;
+  line-height:1.7;
+  color:#c7d1ff;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+
+.result-body .key{color:#a5b4ff;font-weight:600;}
+.result-body .value{color:#e2e6ff;}
+.result-body .sep{color:#4c5280;}
+
+/* Copy button for job_id */
+.copy-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:12px;
+  padding:12px 14px;
+  background:rgba(91,124,250,.08);
+  border:1px solid rgba(124,147,255,.25);
+  border-radius:12px;
+}
+.copy-row .mono{
+  flex:1;
+  font-size:12px;
+  color:#f7c948;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.btn-copy{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 14px;
+  border-radius:10px;
+  border:1px solid rgba(124,147,255,.35);
+  background:linear-gradient(145deg,#1a2044,#0e1230);
+  color:#c7d1ff;
+  font-family:'Sora',sans-serif;
+  font-size:11px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .3s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 0 15px rgba(91,124,250,.15);
+  white-space:nowrap;
+}
+.btn-copy:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 25px rgba(91,124,250,.3);
+  border-color:rgba(124,147,255,.6);
+  color:#fff;
+}
+.btn-copy:active{transform:translateY(0) scale(.97);}
+.btn-copy svg{width:14px;height:14px;}
+.btn-copy.copied{
+  background:linear-gradient(145deg,#1a3a2e,#0e2018);
+  border-color:rgba(125,211,168,.5);
+  color:#7dd3a8;
+}
+
+/* Error state */
+.result-error .result-header h3{color:#ff8a8a;}
+.result-error .result-header svg{color:#ff8a8a;}
+.result-error .result-card{
+  border-color:rgba(255,138,138,.25);
+  animation:none;
+  box-shadow:0 4px 20px rgba(255,0,0,.1);
+}
+
+/* ===== FOOTER ===== */
+.footer{
+  text-align:center;
+  padding-bottom:40px;
+  font-size:12px;
+  color:#4c5280;
+  letter-spacing:.4px;
+}
+.footer span{color:#7c93ff;animation:heartBeat 1.5s ease-in-out infinite;}
+@keyframes heartBeat{
+  0%,100%{transform:scale(1);}
+  14%{transform:scale(1.3);}
+  28%{transform:scale(1);}
+  42%{transform:scale(1.3);}
+  70%{transform:scale(1);}
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:640px){
+  .panel-body{padding:22px 18px;}
+  .btn{padding:16px;}
+  .hero h1{font-size:26px;}
+  .copy-row{flex-direction:column;align-items:stretch;}
+  .copy-row .mono{white-space:normal;word-break:break-all;}
+}
+</style>
+</head>
+<body>
+
+<!-- Floating orbs -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="btn-back" aria-label="Kembali">🔙</a>
+    <div class="brand">
+      <div class="mark">
+        <img src="https://kimi-web-img.kimi.ai/img/www.freeiconspng.com/f13d343f0154cde94819e554bca6891f32f69eb6.png" alt="Alight Motion" style="width:100%;height:100%;object-fit:cover;border-radius:10px;position:relative;z-index:1;">
+      </div>
+      RafaXMods<span class="sub">AM Tools</span>
+    </div>
+  </div>
+  <div class="nav-status"><span class="dot"></span>API Online</div>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
+    Alight Motion Verification
+  </div>
+  <h1>AM Send & Verif<br>dalam Satu Panel</h1>
+  <p>Kirim verification request ke Gmail dan verifikasi link Alight Motion secara otomatis. Cukup masukkan data — sistem akan menangani sisanya.</p>
+</header>
+
+<main class="workspace">
+
+  <!-- Toggle Tabs -->
+  <div class="tab-bar" id="tabBar">
+    <button class="tab-btn active" data-tab="send" onclick="switchTab('send')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      AM Send
+    </button>
+    <button class="tab-btn" data-tab="verif" onclick="switchTab('verif')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+      AM Verif
+    </button>
+  </div>
+
+  <!-- AM SEND PANEL -->
+  <div class="panel" id="panelSend">
+    <div class="panel-body">
+      <div class="input-group">
+        <label for="sendEmail">Gmail Target</label>
+        <input type="email" id="sendEmail" class="input-field" placeholder="user@gmail.com">
+      </div>
+
+      <button class="btn" id="btnSend" onclick="handleSend()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Kirim Verification Request
+      </button>
+
+      <div class="stage" id="stageSend">
+        <div class="stage-head" id="stageHeadSend">Standby</div>
+        <div class="corner-bl"></div>
+        <div class="corner-br"></div>
+
+        <div class="loading" id="loadingSend">
+          <div class="loader-wrap">
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+          </div>
+          <p>Mengirim Request...</p>
+          <span>mohon tunggu sebentar</span>
+        </div>
+
+        <div class="placeholder" id="placeholderSend">
+          <div class="placeholder-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <strong>Belum ada data</strong>
+          Masukkan Gmail dan tekan tombol kirim
+        </div>
+
+        <div id="resultBoxSend"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AM VERIF PANEL -->
+  <div class="panel" id="panelVerif" style="display:none;">
+    <div class="panel-body">
+      <div class="input-group">
+        <label for="verifInput">Job ID & Link Verifikasi</label>
+        <input type="text" id="verifInput" class="input-field" placeholder="job_v1:xxxxx|https://alight-creative.firebaseapp.com/__/auth/links?link=xxxxx">
+        <p style="font-size:11.5px;color:#4c5280;margin-top:4px;">Format: <span class="mono" style="color:#7c93ff;">jobId|link</span> (pisahkan dengan tanda pipe |)</p>
+      </div>
+
+      <button class="btn" id="btnVerif" onclick="handleVerif()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+        Proses Verifikasi
+      </button>
+
+      <div class="stage" id="stageVerif">
+        <div class="stage-head" id="stageHeadVerif">Standby</div>
+        <div class="corner-bl"></div>
+        <div class="corner-br"></div>
+
+        <div class="loading" id="loadingVerif">
+          <div class="loader-wrap">
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+          </div>
+          <p>Melakukan Verifikasi...</p>
+          <span>mohon tunggu sebentar</span>
+        </div>
+
+        <div class="placeholder" id="placeholderVerif">
+          <div class="placeholder-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+          </div>
+          <strong>Belum ada data</strong>
+          Masukkan Job ID dan Link lalu tekan proses
+        </div>
+
+        <div id="resultBoxVerif"></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div class="footer">Crafted with <span>&hearts;</span> by RafaXMods &mdash; Blue-Cyber Series</div>
+
+<script>
+let currentJobId = "";
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+
+  if(tab === 'send'){
+    document.getElementById('panelSend').style.display = 'block';
+    document.getElementById('panelVerif').style.display = 'none';
+  } else {
+    document.getElementById('panelSend').style.display = 'none';
+    document.getElementById('panelVerif').style.display = 'block';
+  }
+}
+
+function setStage(mode, prefix){
+  const el = document.getElementById('stageHead' + prefix);
+  if(mode === "idle") el.textContent = "Standby";
+  else if(mode === "loading") el.textContent = "Memproses";
+  else if(mode === "done") el.textContent = "Selesai";
+  else if(mode === "error") el.textContent = "Gagal";
+}
+
+function resetStage(prefix){
+  document.getElementById('loading' + prefix).style.display = 'none';
+  document.getElementById('placeholder' + prefix).style.display = 'block';
+  document.getElementById('resultBox' + prefix).style.display = 'none';
+  document.getElementById('resultBox' + prefix).innerHTML = '';
+}
+
+function showResult(prefix, content, isError = false){
+  const box = document.getElementById('resultBox' + prefix);
+  box.innerHTML = content;
+  box.style.display = 'block';
+  document.getElementById('loading' + prefix).style.display = 'none';
+  document.getElementById('placeholder' + prefix).style.display = 'none';
+  setStage(isError ? 'error' : 'done', prefix);
+}
+
+function formatJSON(obj) {
+  try {
+    return JSON.stringify(obj, null, 2);
+  } catch {
+    return String(obj);
+  }
+}
+
+async function handleSend(){
+  const email = document.getElementById('sendEmail').value.trim();
+  const btn = document.getElementById('btnSend');
+
+  if(!email){
+    alert('❌ Gmail tidak boleh kosong.\n\nContoh: user@gmail.com');
+    return;
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    alert('❌ Format email tidak valid.\n\nContoh: user@gmail.com');
+    return;
+  }
+
+  btn.disabled = true;
+  resetStage('Send');
+  document.getElementById('loadingSend').style.display = 'flex';
+  document.getElementById('placeholderSend').style.display = 'none';
+  setStage('loading', 'Send');
+
+  try{
+    const res = await fetch('https://api.synoxcloud.xyz/am/send', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({gmail: email, apikey: 'FREE'})
+    });
+
+    const data = await res.json();
+    console.log('AM SEND RESPONSE:', JSON.stringify(data, null, 2));
+
+    let hasil = (typeof data === 'string') ? data : formatJSON(data);
+
+    // Try extract job_id
+    let jobId = '';
+    if(data && typeof data === 'object'){
+      if(data.jobId) jobId = data.jobId;
+      else if(data.result && data.result.jobId) jobId = data.result.jobId;
+      else if(data.job_id) jobId = data.job_id;
+      else if(data.id) jobId = data.id;
+    }
+    currentJobId = jobId;
+
+    let copyHtml = '';
+    if(jobId){
+      copyHtml = `
+        <div class="copy-row">
+          <span class="mono" id="jobIdText">${jobId}</span>
+          <button class="btn-copy" onclick="copyJobId(this, '${jobId}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+      `;
+    }
+
+    const content = `
+      <div class="result-card">
+        <div class="result-header">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <h3>AM SEND BERHASIL</h3>
+        </div>
+        <div class="result-body">
+<span class="key">📧 Gmail</span><span class="sep">:</span> <span class="value">${email}</span>
+
+${hasil}
+        </div>
+        ${copyHtml}
+      </div>
+    `;
+
+    showResult('Send', content, false);
+
+  }catch(err){
+    console.error('AM SEND ERROR:', err);
+    const content = `
+      <div class="result-card result-error">
+        <div class="result-header">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          <h3>GAGAL MENGIRIM</h3>
+        </div>
+        <div class="result-body">${err.message}</div>
+      </div>
+    `;
+    showResult('Send', content, true);
+  }finally{
+    btn.disabled = false;
+  }
+}
+
+async function handleVerif(){
+  const input = document.getElementById('verifInput').value.trim();
+  const btn = document.getElementById('btnVerif');
+
+  if(!input){
+    alert('❌ Input tidak boleh kosong.\n\nFormat: jobId|link');
+    return;
+  }
+
+  const separator = input.indexOf('|');
+  if(separator === -1){
+    alert('❌ Format salah.\n\nGunakan: jobId|link\nContoh: job_v1:xxxxx|https://alight-creative.firebaseapp.com/...');
+    return;
+  }
+
+  const jobId = input.slice(0, separator).trim();
+  const link = input.slice(separator + 1).trim();
+
+  if(!jobId){
+    alert('❌ jobId tidak boleh kosong.');
+    return;
+  }
+  if(!/^https?:\/\//i.test(link)){
+    alert('❌ Link verifikasi tidak valid. Harus diawali dengan http:// atau https://');
+    return;
+  }
+
+  btn.disabled = true;
+  resetStage('Verif');
+  document.getElementById('loadingVerif').style.display = 'flex';
+  document.getElementById('placeholderVerif').style.display = 'none';
+  setStage('loading', 'Verif');
+
+  try{
+    const res = await fetch('https://api.synoxcloud.xyz/am/verif', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({jobId: jobId, link: link, apikey: 'FREE'})
+    });
+
+    const data = await res.json();
+    console.log('AM VERIF RESPONSE:', JSON.stringify(data, null, 2));
+
+    let hasil = (typeof data === 'string') ? data : formatJSON(data);
+
+    const content = `
+      <div class="result-card">
+        <div class="result-header">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <h3>AM VERIFICATION</h3>
+        </div>
+        <div class="result-body">
+<span class="key">🆔 Job ID</span><span class="sep">:</span> <span class="value">${jobId}</span>
+
+${hasil}
+        </div>
+      </div>
+    `;
+
+    showResult('Verif', content, false);
+
+  }catch(err){
+    console.error('AM VERIF ERROR:', err);
+    const content = `
+      <div class="result-card result-error">
+        <div class="result-header">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          <h3>VERIFIKASI GAGAL</h3>
+        </div>
+        <div class="result-body">${err.message}</div>
+      </div>
+    `;
+    showResult('Verif', content, true);
+  }finally{
+    btn.disabled = false;
+  }
+}
+
+function copyJobId(btn, text){
+  // Fallback clipboard untuk file:// atau context non-HTTPS
+  let success = false;
+  if(navigator.clipboard && window.isSecureContext){
+    try{
+      navigator.clipboard.writeText(text);
+      success = true;
+    }catch(e){}
+  }
+  if(!success){
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try{
+      success = document.execCommand('copy');
+    }catch(e){}
+    document.body.removeChild(ta);
+  }
+  if(success){
+    const original = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Tersalin`;
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = original;
+    }, 2000);
+  }else{
+    alert('Gagal menyalin ke clipboard');
+  }
+}
+</script>
+
+</body>
+</html>

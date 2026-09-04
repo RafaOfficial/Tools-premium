@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>Ztream — Netflix Style</title>
+<style>
+:root{
+  --bg:#050505;--surface:#101010;--surface2:#181818;--line:#292929;
+  --red:#e50914;--white:#fff;--muted:#a8a8a8;--gold:#f5c518;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:#fff;font-family:Arial,Helvetica,sans-serif}
+body{min-height:100vh}
+button,input{font:inherit}
+button{cursor:pointer}
+img{display:block}
+.app{min-height:100vh}
+.topbar{
+  position:fixed;z-index:50;top:0;left:0;right:0;height:68px;
+  display:flex;align-items:center;padding:0 4vw;gap:28px;
+  background:linear-gradient(#050505,rgba(5,5,5,.72),transparent);
+  transition:.25s
+}
+.topbar.scrolled{background:rgba(5,5,5,.96);backdrop-filter:blur(12px)}
+.logo{font-size:25px;font-weight:900;letter-spacing:-1px;color:var(--red);text-decoration:none}
+.nav{display:flex;gap:22px;color:#ddd;font-size:14px}
+.nav button{border:0;background:none;color:inherit}
+.nav button:hover,.nav button.active{color:#fff;font-weight:700}
+.top-actions{margin-left:auto;display:flex;align-items:center;gap:12px}
+.icon-btn{border:0;background:transparent;color:#fff;font-size:21px;width:38px;height:38px}
+.searchbox{display:none;align-items:center;background:#111;border:1px solid #555;padding:7px 10px;border-radius:4px}
+.searchbox.open{display:flex}
+.searchbox input{width:210px;background:none;border:0;outline:0;color:#fff}
+.hero{
+  min-height:650px;position:relative;display:flex;align-items:flex-end;
+  background-size:cover;background-position:center;
+}
+.hero:after{content:"";position:absolute;inset:0;background:
+ linear-gradient(90deg,rgba(0,0,0,.9) 0%,rgba(0,0,0,.45) 48%,rgba(0,0,0,.15) 100%),
+ linear-gradient(0deg,var(--bg) 2%,transparent 45%,rgba(0,0,0,.25));
+}
+.hero-content{position:relative;z-index:2;padding:0 4vw 85px;max-width:650px}
+.hero-kicker{font-size:12px;text-transform:uppercase;letter-spacing:3px;color:#ddd;margin-bottom:12px}
+.hero h1{font-size:clamp(36px,6vw,70px);line-height:.98;margin-bottom:15px}
+.hero-meta{display:flex;gap:12px;align-items:center;color:#ddd;font-size:14px;margin-bottom:14px}
+.rating{color:var(--gold);font-weight:700}
+.hero p{color:#ddd;line-height:1.55;font-size:15px;max-width:590px;margin-bottom:22px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:0;border-radius:4px;padding:11px 20px;font-weight:700;display:inline-flex;align-items:center;gap:8px}
+.btn.red{background:#fff;color:#000}
+.btn.red:hover{background:#ddd}
+.btn.dark{background:rgba(70,70,70,.8);color:#fff}
+.btn.dark:hover{background:#555}
+main{padding-bottom:85px}
+.section{padding:0 4vw;margin-top:-20px;position:relative;z-index:4}
+.section+.section{margin-top:28px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.section-title{font-size:20px;font-weight:800}
+.section-sub{font-size:12px;color:#888}
+.row{display:flex;gap:10px;overflow-x:auto;padding-bottom:7px;scrollbar-width:none}
+.row::-webkit-scrollbar{display:none}
+.card{flex:0 0 150px;position:relative;cursor:pointer}
+.poster{width:150px;height:220px;object-fit:cover;border-radius:4px;background:#151515;transition:transform .2s,filter .2s}
+.card:hover .poster{transform:scale(1.045);filter:brightness(.75)}
+.card-title{font-size:13px;font-weight:700;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-meta{font-size:11px;color:#aaa;margin-top:4px}
+.card-badge{position:absolute;top:7px;left:7px;background:rgba(0,0,0,.75);padding:4px 6px;border-radius:3px;font-size:10px}
+.progress{position:absolute;left:0;right:0;bottom:36px;height:4px;background:#555}
+.progress i{display:block;height:100%;background:var(--red)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:18px 12px}
+.bottom{
+ position:fixed;z-index:60;bottom:0;left:0;right:0;height:64px;background:rgba(8,8,8,.96);
+ border-top:1px solid #222;display:none;justify-content:space-around;align-items:center
+}
+.bottom button{border:0;background:none;color:#888;font-size:11px;display:flex;flex-direction:column;gap:4px;align-items:center}
+.bottom button.active{color:#fff}.bottom b{font-size:21px}
+.view{display:none;padding:90px 4vw 90px}.view.active{display:block}
+.search-panel{display:flex;gap:10px;margin-bottom:18px}
+.search-panel input{flex:1;background:#151515;border:1px solid #333;color:#fff;border-radius:5px;padding:13px;outline:0}
+.chips{display:flex;gap:8px;overflow-x:auto;margin-bottom:20px;scrollbar-width:none}
+.chip{white-space:nowrap;border:1px solid #333;background:#111;color:#ccc;border-radius:99px;padding:7px 13px;font-size:12px}
+.chip.active{background:#fff;color:#000;border-color:#fff}
+.empty{padding:50px 15px;text-align:center;color:#777}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:100;display:none}
+.overlay.show{display:block}
+.detail{
+ position:absolute;inset:3vh auto 3vh 50%;transform:translateX(-50%);width:min(900px,94vw);
+ background:#101010;border:1px solid #282828;border-radius:8px;overflow:auto
+}
+.detail-backdrop{height:340px;background-size:cover;background-position:center;position:relative}
+.detail-backdrop:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#101010 0%,transparent 70%)}
+.close{position:absolute;right:15px;top:15px;z-index:3;width:38px;height:38px;border:0;border-radius:50%;background:#111;color:#fff;font-size:22px}
+.detail-body{padding:0 28px 30px;margin-top:-55px;position:relative;z-index:2}
+.detail h2{font-size:32px;margin-bottom:10px}
+.detail-meta{display:flex;gap:12px;color:#bbb;font-size:13px;margin-bottom:18px;flex-wrap:wrap}
+.detail p{color:#bbb;line-height:1.6;max-width:760px}
+.episode-list{margin-top:25px;display:grid;gap:8px}
+.episode{
+ display:flex;align-items:center;gap:12px;background:#181818;border:1px solid #252525;
+ padding:10px;border-radius:5px
+}
+.episode img{width:120px;height:68px;object-fit:cover;border-radius:4px}
+.episode .grow{flex:1}.episode strong{font-size:14px}.episode small{color:#999}
+.player{position:fixed;inset:0;background:#000;z-index:200;display:none;flex-direction:column}
+.player.show{display:flex}
+.player-head{height:65px;display:flex;align-items:center;gap:12px;padding:0 18px;background:#080808}
+.player-title{font-weight:700}.player-note{font-size:11px;color:#888}
+.player-main{flex:1;display:flex;align-items:center;justify-content:center}
+video{width:100%;max-height:82vh;background:#000}
+.player-controls{padding:12px 18px;color:#aaa;font-size:12px}
+.settings{
+ position:fixed;right:18px;top:70px;width:min(390px,92vw);z-index:80;background:#111;border:1px solid #333;
+ border-radius:8px;padding:18px;display:none;box-shadow:0 20px 60px #000
+}
+.settings.show{display:block}.settings h3{margin-bottom:8px}.settings p{font-size:12px;color:#999;line-height:1.5;margin-bottom:12px}
+.settings input{width:100%;background:#080808;color:#fff;border:1px solid #333;padding:10px;border-radius:4px;margin-bottom:9px}
+.toast{position:fixed;left:50%;bottom:82px;transform:translateX(-50%);background:#fff;color:#000;padding:10px 16px;border-radius:5px;z-index:300;display:none;font-size:13px}
+.toast.show{display:block}
+@media(max-width:700px){
+ .topbar{height:58px;padding:0 16px}.nav{display:none}.logo{font-size:23px}
+ .top-actions{gap:2px}.searchbox input{width:145px}
+ .hero{min-height:560px}.hero-content{padding:0 16px 65px}
+ .hero h1{font-size:42px}.hero p{font-size:13px}
+ .section{padding:0 16px}.section-title{font-size:17px}
+ .card{flex-basis:125px}.poster{width:125px;height:185px}
+ .grid{grid-template-columns:repeat(3,1fr);gap:14px 8px}.grid .card{min-width:0}.grid .poster{width:100%;height:auto;aspect-ratio:2/3}
+ .bottom{display:flex}.view{padding:75px 16px 90px}
+ .detail{inset:0;width:100%;transform:none;left:0;border-radius:0}
+ .detail-backdrop{height:290px}.detail-body{padding:0 18px 30px}
+ .detail h2{font-size:26px}.episode img{width:92px;height:55px}
+}
+@media(min-width:701px){.hero{min-height:720px}.section{margin-top:-35px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar" id="topbar">
+  <a class="logo" href="#" onclick="go('home');return false">ZTREAM</a>
+  <nav class="nav">
+    <button class="active" data-nav="home" onclick="go('home')">Beranda</button>
+    <button data-nav="search" onclick="go('search')">Film & Series</button>
+    <button data-nav="mylist" onclick="go('mylist')">Daftarku</button>
+  </nav>
+  <div class="top-actions">
+    <div class="searchbox" id="topSearch"><input id="topSearchInput" placeholder="Cari..." oninput="searchFromTop(this.value)"><span>⌕</span></div>
+    <button class="icon-btn" onclick="toggleTopSearch()" aria-label="Cari">⌕</button>
+    <button class="icon-btn" onclick="toggleSettings()" aria-label="Pengaturan">⚙</button>
+  </div>
+</header>
+
+<section id="homeView" class="view active" style="padding:0">
+  <div class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-kicker" id="heroKicker">ZTREAM ORIGINAL</div>
+      <h1 id="heroTitle">Memuat...</h1>
+      <div class="hero-meta"><span class="rating" id="heroRating">★ —</span><span id="heroYear">—</span><span id="heroType">Movie</span></div>
+      <p id="heroOverview">Memuat katalog...</p>
+      <div class="actions">
+        <button class="btn red" onclick="playHero()">▶ Putar</button>
+        <button class="btn dark" onclick="detailHero()">ⓘ Selengkapnya</button>
+      </div>
+    </div>
+  </div>
+  <main>
+    <section class="section" id="continueSection">
+      <div class="section-head"><h2 class="section-title">Lanjutkan Menonton</h2><span class="section-sub" id="continueCount"></span></div>
+      <div class="row" id="continueRow"></div>
+    </section>
+    <section class="section"><div class="section-head"><h2 class="section-title">Trending Minggu Ini</h2></div><div class="row" id="trendingRow"></div></section>
+    <section class="section"><div class="section-head"><h2 class="section-title">Film Populer</h2></div><div class="row" id="moviesRow"></div></section>
+    <section class="section"><div class="section-head"><h2 class="section-title">Serial TV Populer</h2></div><div class="row" id="tvRow"></div></section>
+    <section class="section"><div class="section-head"><h2 class="section-title">Rating Tertinggi</h2></div><div class="row" id="ratingRow"></div></section>
+  </main>
+</section>
+
+<section id="searchView" class="view">
+  <h1 style="font-size:32px;margin-bottom:20px">Cari Film & Series</h1>
+  <div class="search-panel"><input id="searchInput" placeholder="Cari minimal 2 karakter..." oninput="debouncedSearch(this.value)"></div>
+  <div class="chips" id="chips"></div>
+  <div class="grid" id="searchGrid"></div>
+</section>
+
+<section id="mylistView" class="view">
+  <div class="section-head"><h1 style="font-size:30px">Daftarku</h1><span class="section-sub" id="myCount"></span></div>
+  <div class="grid" id="myGrid"></div>
+</section>
+
+<nav class="bottom">
+ <button class="active" data-nav="home" onclick="go('home')"><b>⌂</b>Beranda</button>
+ <button data-nav="search" onclick="go('search')"><b>⌕</b>Cari</button>
+ <button data-nav="mylist" onclick="go('mylist')"><b>＋</b>Daftarku</button>
+</nav>
+
+<div class="overlay" id="detailOverlay" onclick="if(event.target===this)closeDetail()">
+ <div class="detail">
+  <button class="close" onclick="closeDetail()">×</button>
+  <div class="detail-backdrop" id="detailBackdrop"></div>
+  <div class="detail-body">
+   <h2 id="detailTitle"></h2>
+   <div class="detail-meta"><span class="rating" id="detailRating"></span><span id="detailYear"></span><span id="detailType"></span></div>
+   <div class="actions" style="margin-bottom:18px">
+    <button class="btn red" onclick="playDetail()">▶ Putar</button>
+    <button class="btn dark" id="watchBtn" onclick="toggleDetailWatch()">＋ Daftarku</button>
+   </div>
+   <p id="detailOverview"></p>
+   <div id="episodeBox" style="display:none">
+    <h3 style="margin:26px 0 12px">Season & Episode</h3>
+    <div class="episode-list" id="episodeList"></div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<div class="player" id="player">
+ <div class="player-head">
+  <button class="close" style="position:static" onclick="closePlayer()">×</button>
+  <div><div class="player-title" id="playerTitle">Now Playing</div><div class="player-note" id="playerNote">HTML5 Player</div></div>
+ </div>
+ <div class="player-main"><video id="video" controls playsinline preload="metadata"></video></div>
+ <div class="player-controls" id="playerInfo">Progress disimpan otomatis di browser.</div>
+</div>
+
+<div class="settings" id="settings">
+ <h3>Pengaturan Player</h3>
+ <p>Untuk memutar video milikmu sendiri, masukkan URL MP4 atau HLS (.m3u8) yang memang kamu punya izin untuk digunakan. Kosongkan untuk memakai demo.</p>
+ <input id="mediaUrl" placeholder="https://domain-kamu/video.mp4 atau .m3u8">
+ <button class="btn red" onclick="saveMediaUrl()">Simpan URL</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
+<script>
+/*
+  Ztream single-file web port.
+  UI/feature concepts are based on the public repository's Discover,
+  trending, search, genres, detail, episodes, watchlist and continue-watching flow.
+  Playback intentionally uses a configurable authorized media URL or demo media.
+*/
+const DEMO_MEDIA="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+const TMDB="https://image.tmdb.org/t/p/";
+const catalog=[
+ {id:634649,title:"Spider-Man: No Way Home",type:"Movie",year:2021,rating:8.0,
+  poster:TMDB+"w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",backdrop:TMDB+"w1280/14QbnygCuTO0vl7CAFmPf1fgZfV.jpg",
+  genres:["Action","Adventure","Sci-Fi"],overview:"Peter Parker menghadapi identitasnya yang terbongkar dan meminta bantuan Doctor Strange.",trending:10},
+ {id:872585,title:"Oppenheimer",type:"Movie",year:2023,rating:8.1,
+  poster:TMDB+"w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",backdrop:TMDB+"w1280/rLb2cwF3Pazuxaj0sRXQ037tGI1.jpg",
+  genres:["Drama","History","Sci-Fi"],overview:"Kisah fisikawan J. Robert Oppenheimer dan proyek Manhattan.",trending:9},
+ {id:84958,title:"Loki",type:"TV",year:2021,rating:8.2,
+  poster:TMDB+"w500/voHUmlvjysv91hB4hGqH17u7p4L.jpg",backdrop:TMDB+"w1280/ykUEbfpkf8d0v49q4qyqv40k.jpg",
+  genres:["Action","Adventure","Sci-Fi"],overview:"Loki dibawa ke Time Variance Authority setelah mencuri Tesseract.",trending:8,
+  episodes:[
+   {ep:1,title:"Glorious Purpose",dur:"51m",still:TMDB+"w300/voHUmlvjysv91hB4hGqH17u7p4L.jpg"},
+   {ep:2,title:"The Variant",dur:"54m",still:TMDB+"w300/voHUmlvjysv91hB4hGqH17u7p4L.jpg"},
+   {ep:3,title:"Lamentis",dur:"42m",still:TMDB+"w300/voHUmlvjysv91hB4hGqH17u7p4L.jpg"}
+  ]},
+ {id:94605,title:"Arcane",type:"TV",year:2021,rating:8.7,
+  poster:TMDB+"w500/fqldf2t8ztc9aiwn397r1a0dka2.jpg",backdrop:TMDB+"w1280/2OMB0ynKlyIenMJWI2Dy9IWT4c.jpg",
+  genres:["Animation","Action","Fantasy"],overview:"Di tengah perselisihan Piltover dan Zaun, dua saudari bertarung di sisi yang berlawanan.",trending:7,
+  episodes:[1,2,3,4,5,6].map(n=>({ep:n,title:"Episode "+n,dur:"40m",still:TMDB+"w300/fqldf2t8ztc9aiwn397r1a0dka2.jpg"}))},
+ {id:299536,title:"Avengers: Infinity War",type:"Movie",year:2018,rating:8.2,
+  poster:TMDB+"w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",backdrop:TMDB+"w1280/mDfJG3LC3Dqb67AZ52x3Z0jU0uB.jpg",
+  genres:["Action","Adventure","Sci-Fi"],overview:"Para Avengers menghadapi ancaman besar yang datang untuk mengumpulkan Infinity Stones.",trending:6},
+ {id:157336,title:"Interstellar",type:"Movie",year:2014,rating:8.7,
+  poster:TMDB+"w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",backdrop:TMDB+"w1280/xJHokMbljvjADYdit5fK5K8pJ.jpg",
+  genres:["Adventure","Drama","Sci-Fi"],overview:"Sekelompok penjelajah melakukan perjalanan melintasi wormhole untuk mencari masa depan umat manusia.",trending:5},
+ {id:603,title:"The Matrix",type:"Movie",year:1999,rating:8.2,
+  poster:TMDB+"w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",backdrop:TMDB+"w1280/icmmSD4vTTDKOq2vvdulafOGw93.jpg",
+  genres:["Action","Sci-Fi"],overview:"Seorang hacker menemukan bahwa realitas yang ia kenal hanyalah sebuah simulasi.",trending:4},
+ {id:680,title:"Pulp Fiction",type:"Movie",year:1994,rating:8.9,
+  poster:TMDB+"w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg",backdrop:TMDB+"w1280/suaEOtk1N1sgg2MTM7oZd2cfVp3.jpg",
+  genres:["Crime","Drama"],overview:"Kisah beberapa karakter kriminal yang saling terhubung dalam rangkaian kejadian tak terduga.",trending:3}
+];
+
+const genres=["Semua","Action","Adventure","Animation","Comedy","Drama","Fantasy","History","Sci-Fi","Crime"];
+let state={
+ hero:catalog[0],detail:null,genre:"Semua",search:"",watch:load("ztream_watch",[]),
+ progress:load("ztream_progress",{}),media:localStorage.getItem("ztream_media")||""
+};
+function load(k,f){try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}}
+function save(){localStorage.setItem("ztream_watch",JSON.stringify(state.watch));localStorage.setItem("ztream_progress",JSON.stringify(state.progress))}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function card(item,progress=false){
+ const p=state.progress[item.id]||0;
+ const el=document.createElement("article");el.className="card";
+ el.onclick=()=>openDetail(item);
+ el.innerHTML=`<img class="poster" loading="lazy" src="${esc(item.poster)}" alt="${esc(item.title)}" onerror="this.style.background='#222';this.removeAttribute('src')">
+ ${progress&&p>0?`<span class="card-badge">${Math.round(p*100)}%</span><div class="progress"><i style="width:${p*100}%"></i></div>`:""}
+ <div class="card-title">${esc(item.title)}</div><div class="card-meta"><span class="rating">★ ${item.rating}</span> · ${item.year} · ${item.type}</div>`;
+ return el;
+}
+function fill(id,items,progress=false){const e=document.getElementById(id);e.innerHTML="";items.forEach(x=>e.appendChild(card(x,progress)))}
+function renderHome(){
+ const h=state.hero;
+ document.getElementById("hero").style.backgroundImage=`url("${h.backdrop}")`;
+ document.getElementById("heroTitle").textContent=h.title;
+ document.getElementById("heroRating").textContent="★ "+h.rating;
+ document.getElementById("heroYear").textContent=h.year;
+ document.getElementById("heroType").textContent=h.type;
+ document.getElementById("heroOverview").textContent=h.overview;
+ const cont=catalog.filter(x=>(state.progress[x.id]||0)>0 && (state.progress[x.id]||0)<.95);
+ document.getElementById("continueSection").style.display=cont.length?"block":"none";
+ document.getElementById("continueCount").textContent=cont.length?cont.length+" konten":"";
+ fill("continueRow",cont,true);
+ fill("trendingRow",[...catalog].sort((a,b)=>b.trending-a.trending));
+ fill("moviesRow",catalog.filter(x=>x.type==="Movie").sort((a,b)=>b.rating-a.rating));
+ fill("tvRow",catalog.filter(x=>x.type==="TV").sort((a,b)=>b.rating-a.rating));
+ fill("ratingRow",[...catalog].sort((a,b)=>b.rating-a.rating));
+}
+function renderChips(){
+ const e=document.getElementById("chips");e.innerHTML="";
+ genres.forEach(g=>{const b=document.createElement("button");b.className="chip "+(state.genre===g?"active":"");b.textContent=g;b.onclick=()=>{state.genre=g;renderChips();renderSearch()};e.appendChild(b)})
+}
+function renderSearch(){
+ const q=state.search.trim().toLowerCase();
+ let arr=catalog.filter(x=>(!q||x.title.toLowerCase().includes(q)||x.genres.some(g=>g.toLowerCase().includes(q)))&&(state.genre==="Semua"||x.genres.includes(state.genre)));
+ const e=document.getElementById("searchGrid");e.innerHTML="";
+ if(!arr.length){e.innerHTML='<div class="empty" style="grid-column:1/-1">Tidak ada hasil.</div>';return}
+ arr.forEach(x=>e.appendChild(card(x)));
+}
+function renderList(){
+ const e=document.getElementById("myGrid");e.innerHTML="";
+ const arr=state.watch.map(id=>catalog.find(x=>x.id===id)).filter(Boolean);
+ document.getElementById("myCount").textContent=arr.length+" item";
+ if(!arr.length){e.innerHTML='<div class="empty" style="grid-column:1/-1">Daftarmu masih kosong.<br>Simpan film atau series dari halaman detail.</div>';return}
+ arr.forEach(x=>e.appendChild(card(x)));
+}
+function updateNav(name){
+ document.querySelectorAll("[data-nav]").forEach(x=>x.classList.toggle("active",x.dataset.nav===name))
+}
+function go(name){
+ document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+ document.getElementById(name==="home"?"homeView":name==="search"?"searchView":"mylistView").classList.add("active");
+ updateNav(name);
+ if(name==="search"){renderChips();renderSearch();setTimeout(()=>document.getElementById("searchInput").focus(),80)}
+ if(name==="mylist")renderList();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+let timer;
+function debouncedSearch(v){clearTimeout(timer);timer=setTimeout(()=>{state.search=v;renderSearch()},400)}
+function searchFromTop(v){clearTimeout(timer);timer=setTimeout(()=>{state.search=v;go("search")},400)}
+function toggleTopSearch(){document.getElementById("topSearch").classList.toggle("open");if(document.getElementById("topSearch").classList.contains("open"))document.getElementById("topSearchInput").focus()}
+function openDetail(item){
+ state.detail=item;
+ document.getElementById("detailBackdrop").style.backgroundImage=`url("${item.backdrop}")`;
+ document.getElementById("detailTitle").textContent=item.title;
+ document.getElementById("detailRating").textContent="★ "+item.rating;
+ document.getElementById("detailYear").textContent=item.year;
+ document.getElementById("detailType").textContent=item.type;
+ document.getElementById("detailOverview").textContent=item.overview;
+ document.getElementById("watchBtn").textContent=state.watch.includes(item.id)?"✓ Tersimpan":"＋ Daftarku";
+ const box=document.getElementById("episodeBox"), list=document.getElementById("episodeList");
+ if(item.type==="TV"&&item.episodes?.length){
+  box.style.display="block";list.innerHTML="";
+  item.episodes.forEach(ep=>{
+   const d=document.createElement("div");d.className="episode";d.onclick=()=>playItem(item,ep);
+   d.innerHTML=`<img src="${esc(ep.still||item.poster)}" alt=""><div class="grow"><strong>E${ep.ep} — ${esc(ep.title)}</strong><br><small>${esc(ep.dur)} · Putar episode</small></div><span>▶</span>`;
+   list.appendChild(d)
+  })
+ }else box.style.display="none";
+ document.getElementById("detailOverlay").classList.add("show");
+}
+function closeDetail(){document.getElementById("detailOverlay").classList.remove("show")}
+function toggleWatch(id){
+ const i=state.watch.indexOf(id);if(i>=0)state.watch.splice(i,1);else state.watch.unshift(id);
+ save();renderHome();renderList();
+}
+function toggleDetailWatch(){if(state.detail)toggleWatch(state.detail.id);openDetail(state.detail);toast(state.watch.includes(state.detail.id)?"Ditambahkan ke Daftarku":"Dihapus dari Daftarku")}
+function playHero(){playItem(state.hero)}
+function detailHero(){openDetail(state.hero)}
+function playDetail(){if(state.detail)playItem(state.detail)}
+function mediaFor(item){return state.media.trim()||DEMO_MEDIA}
+let hls=null;
+function playItem(item,ep=null){
+ const video=document.getElementById("video");
+ const title=ep?`${item.title} — E${ep.ep}: ${ep.title}`:item.title;
+ document.getElementById("playerTitle").textContent=title;
+ document.getElementById("playerNote").textContent=state.media?"Media URL tersimpan":"Demo media";
+ document.getElementById("player").classList.add("show");
+ closeDetail();
+ const url=mediaFor(item);
+ if(hls){hls.destroy();hls=null}
+ video.pause();video.removeAttribute("src");video.load();
+ const resume=state.progress[item.id]||0;
+ const start=()=>{try{if(video.duration&&resume>0)video.currentTime=video.duration*resume}catch{};video.play().catch(()=>{})};
+ if(url.includes(".m3u8") && window.Hls && Hls.isSupported()){
+  hls=new Hls();hls.loadSource(url);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED,start);
+ }else{
+  video.src=url;video.addEventListener("loadedmetadata",start,{once:true});
+ }
+ video.dataset.itemId=item.id;
+}
+function closePlayer(){
+ const v=document.getElementById("video");v.pause();
+ if(hls){hls.destroy();hls=null}
+ document.getElementById("player").classList.remove("show");
+}
+const video=document.getElementById("video");
+video.addEventListener("timeupdate",()=>{
+ const id=Number(video.dataset.itemId);if(!id||!video.duration)return;
+ const p=video.currentTime/video.duration;
+ if(p>=.95){delete state.progress[id]} else if(p>=.05){state.progress[id]=p}
+ save();
+});
+function toggleSettings(){document.getElementById("settings").classList.toggle("show");document.getElementById("mediaUrl").value=state.media}
+function saveMediaUrl(){
+ state.media=document.getElementById("mediaUrl").value.trim();localStorage.setItem("ztream_media",state.media);
+ document.getElementById("settings").classList.remove("show");toast(state.media?"URL media disimpan":"Kembali ke demo media")
+}
+function toast(t){const e=document.getElementById("toast");e.textContent=t;e.classList.add("show");clearTimeout(window._toast);window._toast=setTimeout(()=>e.classList.remove("show"),1800)}
+window.addEventListener("scroll",()=>document.getElementById("topbar").classList.toggle("scrolled",scrollY>40));
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeDetail();closePlayer();document.getElementById("settings").classList.remove("show")}});
+function init(){renderHome();renderChips();renderSearch();renderList()}
+init();
+</script>
+</body>
+</html>

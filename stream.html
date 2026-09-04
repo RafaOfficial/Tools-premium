@@ -118,6 +118,9 @@ video{width:100%;max-height:82vh;background:#000}
 .settings input{width:100%;background:#080808;color:#fff;border:1px solid #333;padding:10px;border-radius:4px;margin-bottom:9px}
 .toast{position:fixed;left:50%;bottom:82px;transform:translateX(-50%);background:#fff;color:#000;padding:10px 16px;border-radius:5px;z-index:300;display:none;font-size:13px}
 .toast.show{display:block}
+.skeleton{background:linear-gradient(90deg,#1a1a1a 25%,#2a2a2a 50%,#1a1a1a 75%);background-size:200% 100%;animation:shimmer 1.2s infinite;border-radius:4px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.loader{text-align:center;padding:40px;color:#888;font-size:14px}
 @media(max-width:700px){
  .topbar{height:58px;padding:0 16px}.nav{display:none}.logo{font-size:23px}
  .top-actions{gap:2px}.searchbox input{width:145px}
@@ -156,7 +159,7 @@ video{width:100%;max-height:82vh;background:#000}
       <div class="hero-kicker" id="heroKicker">ZTREAM ORIGINAL</div>
       <h1 id="heroTitle">Memuat...</h1>
       <div class="hero-meta"><span class="rating" id="heroRating">★ —</span><span id="heroYear">—</span><span id="heroType">Movie</span></div>
-      <p id="heroOverview">Memuat katalog...</p>
+      <p id="heroOverview">Memuat katalog dari MovieZone API...</p>
       <div class="actions">
         <button class="btn red" onclick="playHero()">▶ Putar</button>
         <button class="btn dark" onclick="detailHero()">ⓘ Selengkapnya</button>
@@ -224,81 +227,204 @@ video{width:100%;max-height:82vh;background:#000}
 
 <div class="settings" id="settings">
  <h3>Pengaturan Player</h3>
- <p>Untuk memutar video milikmu sendiri, masukkan URL MP4 atau HLS (.m3u8) yang memang kamu punya izin untuk digunakan. Kosongkan untuk memakai demo.</p>
+ <p>Untuk memutar video milikmu sendiri, masukkan URL MP4 atau HLS (.m3u8) yang memang kamu punya izin untuk digunakan. Kosongkan untuk memakai stream resolver (VidEm / fallback embed).</p>
  <input id="mediaUrl" placeholder="https://domain-kamu/video.mp4 atau .m3u8">
  <button class="btn red" onclick="saveMediaUrl()">Simpan URL</button>
+ <hr style="border:0;border-top:1px solid #333;margin:16px 0">
+ <h3 style="margin-bottom:8px">Stream Resolver</h3>
+ <p style="font-size:12px;color:#999;line-height:1.5;margin-bottom:12px">
+   Default: VidEm.xyz API → videm.xyz/api.php (token-based)<br>
+   Fallback: VidSrc.to, VidLink.pro, MultiEmbed, 2Embed
+ </p>
 </div>
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
 <script>
 /*
-  Ztream single-file web port.
-  UI/feature concepts are based on the public repository's Discover,
-  trending, search, genres, detail, episodes, watchlist and continue-watching flow.
-  Playback intentionally uses a configurable authorized media URL or demo media.
+  Ztream Web Port — Integrated with MovieZone API
+  Base URL: https://moviezone.web.id/
+  Endpoints:
+    GET api/movies/hero              -> Hero spotlight
+    GET api/movies/trending        -> Trending
+    GET api/movies/popular?type=   -> Popular (all|movie|tv)
+    GET api/movies/top-rated       -> Top rated
+    GET api/movies/latest          -> Latest
+    GET api/movies/search?q=       -> Search
+    GET api/movies/genres          -> Genre list
+    GET api/movies/discover?genre= -> Discover by genre
+    GET api/movies/detail/{slug}   -> Content detail
+    GET api/movies/episodes/{slug}?season= -> Episodes
+
+  Stream Resolver (from StreamResolver.kt):
+    Primary:  videm.xyz embed → api.php (token-based HLS extraction)
+    Fallback: vidsrc.to, vidlink.pro, multiembed.mov, 2embed.cc
 */
-const DEMO_MEDIA="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
-const TMDB="https://image.tmdb.org/t/p/";
-const catalog=[
+const API_BASE = "https://moviezone.web.id/";
+const DEMO_MEDIA = "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+const TMDB_IMG = "https://image.tmdb.org/t/p/";
+
+// Demo fallback catalog (used when API fails / CORS blocked)
+const DEMO_CATALOG = [
  {id:634649,title:"Spider-Man: No Way Home",type:"Movie",year:2021,rating:8.0,
-  poster:TMDB+"w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",backdrop:TMDB+"w1280/14QbnygCuTO0vl7CAFmPf1fgZfV.jpg",
-  genres:["Action","Adventure","Sci-Fi"],overview:"Peter Parker menghadapi identitasnya yang terbongkar dan meminta bantuan Doctor Strange.",trending:10},
+  poster:TMDB_IMG+"w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",backdrop:TMDB_IMG+"w1280/14QbnygCuTO0vl7CAFmPf1fgZfV.jpg",
+  genres:["Action","Adventure","Sci-Fi"],overview:"Peter Parker menghadapi identitasnya yang terbongkar.",trending:10,slug:"spider-man-no-way-home-634649",tmdbId:634649},
  {id:872585,title:"Oppenheimer",type:"Movie",year:2023,rating:8.1,
-  poster:TMDB+"w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",backdrop:TMDB+"w1280/rLb2cwF3Pazuxaj0sRXQ037tGI1.jpg",
-  genres:["Drama","History","Sci-Fi"],overview:"Kisah fisikawan J. Robert Oppenheimer dan proyek Manhattan.",trending:9},
+  poster:TMDB_IMG+"w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",backdrop:TMDB_IMG+"w1280/rLb2cwF3Pazuxaj0sRXQ037tGI1.jpg",
+  genres:["Drama","History","Sci-Fi"],overview:"Kisah fisikawan J. Robert Oppenheimer.",trending:9,slug:"oppenheimer-872585",tmdbId:872585},
  {id:84958,title:"Loki",type:"TV",year:2021,rating:8.2,
-  poster:TMDB+"w500/voHUmlvjysv91hB4hGqH17u7p4L.jpg",backdrop:TMDB+"w1280/ykUEbfpkf8d0v49q4qyqv40k.jpg",
-  genres:["Action","Adventure","Sci-Fi"],overview:"Loki dibawa ke Time Variance Authority setelah mencuri Tesseract.",trending:8,
-  episodes:[
-   {ep:1,title:"Glorious Purpose",dur:"51m",still:TMDB+"w300/voHUmlvjysv91hB4hGqH17u7p4L.jpg"},
-   {ep:2,title:"The Variant",dur:"54m",still:TMDB+"w300/voHUmlvjysv91hB4hGqH17u7p4L.jpg"},
-   {ep:3,title:"Lamentis",dur:"42m",still:TMDB+"w300/voHUmlvjysv91hB4hGqH17u7p4L.jpg"}
-  ]},
+  poster:TMDB_IMG+"w500/voHUmlvjysv91hB4hGqH17u7p4L.jpg",backdrop:TMDB_IMG+"w1280/ykUEbfpkf8d0v49q4qyqv40k.jpg",
+  genres:["Action","Adventure","Sci-Fi"],overview:"Loki dibawa ke Time Variance Authority.",trending:8,slug:"loki-84958",tmdbId:84958},
  {id:94605,title:"Arcane",type:"TV",year:2021,rating:8.7,
-  poster:TMDB+"w500/fqldf2t8ztc9aiwn397r1a0dka2.jpg",backdrop:TMDB+"w1280/2OMB0ynKlyIenMJWI2Dy9IWT4c.jpg",
-  genres:["Animation","Action","Fantasy"],overview:"Di tengah perselisihan Piltover dan Zaun, dua saudari bertarung di sisi yang berlawanan.",trending:7,
-  episodes:[1,2,3,4,5,6].map(n=>({ep:n,title:"Episode "+n,dur:"40m",still:TMDB+"w300/fqldf2t8ztc9aiwn397r1a0dka2.jpg"}))},
+  poster:TMDB_IMG+"w500/fqldf2t8ztc9aiwn397r1a0dka2.jpg",backdrop:TMDB_IMG+"w1280/2OMB0ynKlyIenMJWI2Dy9IWT4c.jpg",
+  genres:["Animation","Action","Fantasy"],overview:"Dua saudari bertarung di sisi yang berlawanan.",trending:7,slug:"arcane-94605",tmdbId:94605},
  {id:299536,title:"Avengers: Infinity War",type:"Movie",year:2018,rating:8.2,
-  poster:TMDB+"w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",backdrop:TMDB+"w1280/mDfJG3LC3Dqb67AZ52x3Z0jU0uB.jpg",
-  genres:["Action","Adventure","Sci-Fi"],overview:"Para Avengers menghadapi ancaman besar yang datang untuk mengumpulkan Infinity Stones.",trending:6},
+  poster:TMDB_IMG+"w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",backdrop:TMDB_IMG+"w1280/mDfJG3LC3Dqb67AZ52x3Z0jU0uB.jpg",
+  genres:["Action","Adventure","Sci-Fi"],overview:"Para Avengers menghadapi ancaman besar.",trending:6,slug:"avengers-infinity-war-299536",tmdbId:299536},
  {id:157336,title:"Interstellar",type:"Movie",year:2014,rating:8.7,
-  poster:TMDB+"w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",backdrop:TMDB+"w1280/xJHokMbljvjADYdit5fK5K8pJ.jpg",
-  genres:["Adventure","Drama","Sci-Fi"],overview:"Sekelompok penjelajah melakukan perjalanan melintasi wormhole untuk mencari masa depan umat manusia.",trending:5},
+  poster:TMDB_IMG+"w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",backdrop:TMDB_IMG+"w1280/xJHokMbljvjADYdit5fK5K8pJ.jpg",
+  genres:["Adventure","Drama","Sci-Fi"],overview:"Perjalanan melintasi wormhole.",trending:5,slug:"interstellar-157336",tmdbId:157336},
  {id:603,title:"The Matrix",type:"Movie",year:1999,rating:8.2,
-  poster:TMDB+"w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",backdrop:TMDB+"w1280/icmmSD4vTTDKOq2vvdulafOGw93.jpg",
-  genres:["Action","Sci-Fi"],overview:"Seorang hacker menemukan bahwa realitas yang ia kenal hanyalah sebuah simulasi.",trending:4},
+  poster:TMDB_IMG+"w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",backdrop:TMDB_IMG+"w1280/icmmSD4vTTDKOq2vvdulafOGw93.jpg",
+  genres:["Action","Sci-Fi"],overview:"Hacker menemukan realitas adalah simulasi.",trending:4,slug:"the-matrix-603",tmdbId:603},
  {id:680,title:"Pulp Fiction",type:"Movie",year:1994,rating:8.9,
-  poster:TMDB+"w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg",backdrop:TMDB+"w1280/suaEOtk1N1sgg2MTM7oZd2cfVp3.jpg",
-  genres:["Crime","Drama"],overview:"Kisah beberapa karakter kriminal yang saling terhubung dalam rangkaian kejadian tak terduga.",trending:3}
+  poster:TMDB_IMG+"w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg",backdrop:TMDB_IMG+"w1280/suaEOtk1N1sgg2MTM7oZd2cfVp3.jpg",
+  genres:["Crime","Drama"],overview:"Kisah karakter kriminal yang saling terhubung.",trending:3,slug:"pulp-fiction-680",tmdbId:680}
 ];
 
-const genres=["Semua","Action","Adventure","Animation","Comedy","Drama","Fantasy","History","Sci-Fi","Crime"];
+let catalog = [];
+let allGenres = [];
+let apiAvailable = false;
+
 let state={
- hero:catalog[0],detail:null,genre:"Semua",search:"",watch:load("ztream_watch",[]),
+ hero:null,detail:null,genre:"Semua",search:"",watch:load("ztream_watch",[]),
  progress:load("ztream_progress",{}),media:localStorage.getItem("ztream_media")||""
 };
+
 function load(k,f){try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}}
 function save(){localStorage.setItem("ztream_watch",JSON.stringify(state.watch));localStorage.setItem("ztream_progress",JSON.stringify(state.progress))}
-function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&quot;","'":"&#39;"}[m]))}
+
+// ===== API Helpers =====
+async function apiGet(path) {
+  try {
+    const res = await fetch(API_BASE + path, {
+      headers: { "Accept": "application/json", "User-Agent": "Mozilla/5.0" },
+      referrerPolicy: "no-referrer"
+    });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return await res.json();
+  } catch (e) {
+    console.warn("API error:", path, e.message);
+    return null;
+  }
+}
+
+function normalizeItem(dto) {
+  const rawId = dto.tmdbId ?? dto.id ?? 0;
+  const isSeries = (dto.type || "").toLowerCase() === "tv" || (dto.slug || "").startsWith("tv-");
+  const year = dto.releaseDate ? parseInt(dto.releaseDate.split("-")[0]) : 0;
+  return {
+    id: rawId,
+    slug: dto.slug || (isSeries ? `tv-${rawId}` : `movie-${rawId}`),
+    tmdbId: String(rawId),
+    title: dto.title || "Tanpa Judul",
+    type: isSeries ? "TV" : "Movie",
+    year: year,
+    rating: parseFloat(dto.rating) || 0,
+    poster: dto.poster || "",
+    backdrop: dto.backdrop || dto.poster || "",
+    overview: dto.overview || "",
+    genres: dto.genres || [],
+    trending: 0
+  };
+}
+
+async function loadCatalogFromApi() {
+  toast("Menghubungkan ke MovieZone API...");
+  const [heroRes, trendingRes, popularMovieRes, popularTvRes, topRatedRes] = await Promise.all([
+    apiGet("api/movies/hero"),
+    apiGet("api/movies/trending?page=1"),
+    apiGet("api/movies/popular?type=movie&page=1"),
+    apiGet("api/movies/popular?type=tv&page=1"),
+    apiGet("api/movies/top-rated?type=movie&page=1")
+  ]);
+
+  const map = new Map();
+  const add = (list, tScore) => {
+    if (!list || !list.results) return;
+    list.results.forEach(dto => {
+      const item = normalizeItem(dto);
+      if (!map.has(item.id)) {
+        item.trending = tScore;
+        map.set(item.id, item);
+      } else if (tScore > map.get(item.id).trending) {
+        map.get(item.id).trending = tScore;
+      }
+    });
+  };
+
+  // Trending score: hero=10, trending=9, popular=5, tv=4, top-rated=3
+  add(heroRes, 10);
+  add(trendingRes, 9);
+  add(popularMovieRes, 5);
+  add(popularTvRes, 4);
+  add(topRatedRes, 3);
+
+  catalog = Array.from(map.values());
+  if (catalog.length === 0) throw new Error("Empty catalog");
+
+  apiAvailable = true;
+  state.hero = catalog[0];
+  toast("Terhubung ke MovieZone API ✓");
+}
+
+function useDemoCatalog() {
+  catalog = DEMO_CATALOG.map(x => ({...x}));
+  apiAvailable = false;
+  state.hero = catalog[0];
+  toast("Mode offline — menggunakan data demo");
+}
+
+async function initCatalog() {
+  try {
+    await loadCatalogFromApi();
+  } catch (e) {
+    console.error("API failed, using demo:", e);
+    useDemoCatalog();
+  }
+  // Load genres
+  const gRes = await apiGet("api/movies/genres");
+  if (gRes && gRes.genres) {
+    allGenres = gRes.genres;
+  }
+  renderHome();
+  renderChips();
+  renderSearch();
+  renderList();
+}
+
+// ===== Card & Render =====
 function card(item,progress=false){
  const p=state.progress[item.id]||0;
  const el=document.createElement("article");el.className="card";
  el.onclick=()=>openDetail(item);
  el.innerHTML=`<img class="poster" loading="lazy" src="${esc(item.poster)}" alt="${esc(item.title)}" onerror="this.style.background='#222';this.removeAttribute('src')">
  ${progress&&p>0?`<span class="card-badge">${Math.round(p*100)}%</span><div class="progress"><i style="width:${p*100}%"></i></div>`:""}
- <div class="card-title">${esc(item.title)}</div><div class="card-meta"><span class="rating">★ ${item.rating}</span> · ${item.year} · ${item.type}</div>`;
+ <div class="card-title">${esc(item.title)}</div><div class="card-meta"><span class="rating">★ ${item.rating}</span> · ${item.year||'-'} · ${item.type}</div>`;
  return el;
 }
 function fill(id,items,progress=false){const e=document.getElementById(id);e.innerHTML="";items.forEach(x=>e.appendChild(card(x,progress)))}
+
 function renderHome(){
+ if(!state.hero) state.hero = catalog[0] || DEMO_CATALOG[0];
  const h=state.hero;
  document.getElementById("hero").style.backgroundImage=`url("${h.backdrop}")`;
  document.getElementById("heroTitle").textContent=h.title;
  document.getElementById("heroRating").textContent="★ "+h.rating;
- document.getElementById("heroYear").textContent=h.year;
+ document.getElementById("heroYear").textContent=h.year||"-";
  document.getElementById("heroType").textContent=h.type;
- document.getElementById("heroOverview").textContent=h.overview;
+ document.getElementById("heroOverview").textContent=h.overview||"Tidak ada deskripsi.";
  const cont=catalog.filter(x=>(state.progress[x.id]||0)>0 && (state.progress[x.id]||0)<.95);
  document.getElementById("continueSection").style.display=cont.length?"block":"none";
  document.getElementById("continueCount").textContent=cont.length?cont.length+" konten":"";
@@ -308,27 +434,45 @@ function renderHome(){
  fill("tvRow",catalog.filter(x=>x.type==="TV").sort((a,b)=>b.rating-a.rating));
  fill("ratingRow",[...catalog].sort((a,b)=>b.rating-a.rating));
 }
+
 function renderChips(){
  const e=document.getElementById("chips");e.innerHTML="";
- genres.forEach(g=>{const b=document.createElement("button");b.className="chip "+(state.genre===g?"active":"");b.textContent=g;b.onclick=()=>{state.genre=g;renderChips();renderSearch()};e.appendChild(b)})
+ const names = ["Semua"].concat(allGenres.map(g=>g.name).filter(Boolean));
+ names.forEach(g=>{const b=document.createElement("button");b.className="chip "+(state.genre===g?"active":"");b.textContent=g;b.onclick=()=>{state.genre=g;renderChips();renderSearch()};e.appendChild(b)})
 }
-function renderSearch(){
+
+async function renderSearch(){
  const q=state.search.trim().toLowerCase();
- let arr=catalog.filter(x=>(!q||x.title.toLowerCase().includes(q)||x.genres.some(g=>g.toLowerCase().includes(q)))&&(state.genre==="Semua"||x.genres.includes(state.genre)));
  const e=document.getElementById("searchGrid");e.innerHTML="";
+ let arr=[];
+
+ if (apiAvailable && q.length >= 2) {
+   // Use API search
+   const res = await apiGet("api/movies/search?q=" + encodeURIComponent(q) + "&page=1");
+   if (res && res.results) {
+     arr = res.results.map(normalizeItem);
+   }
+ } else {
+   // Local filter
+   arr=catalog.filter(x=>(!q||x.title.toLowerCase().includes(q)||x.genres.some(g=>g.toLowerCase().includes(q)))&&(state.genre==="Semua"||x.genres.includes(state.genre)));
+ }
+
  if(!arr.length){e.innerHTML='<div class="empty" style="grid-column:1/-1">Tidak ada hasil.</div>';return}
  arr.forEach(x=>e.appendChild(card(x)));
 }
+
 function renderList(){
  const e=document.getElementById("myGrid");e.innerHTML="";
- const arr=state.watch.map(id=>catalog.find(x=>x.id===id)).filter(Boolean);
+ const arr=state.watch.map(id=>catalog.find(x=>x.id===id)||DEMO_CATALOG.find(x=>x.id===id)).filter(Boolean);
  document.getElementById("myCount").textContent=arr.length+" item";
  if(!arr.length){e.innerHTML='<div class="empty" style="grid-column:1/-1">Daftarmu masih kosong.<br>Simpan film atau series dari halaman detail.</div>';return}
  arr.forEach(x=>e.appendChild(card(x)));
 }
+
 function updateNav(name){
  document.querySelectorAll("[data-nav]").forEach(x=>x.classList.toggle("active",x.dataset.nav===name))
 }
+
 function go(name){
  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
  document.getElementById(name==="home"?"homeView":name==="search"?"searchView":"mylistView").classList.add("active");
@@ -337,30 +481,65 @@ function go(name){
  if(name==="mylist")renderList();
  window.scrollTo({top:0,behavior:"smooth"});
 }
+
 let timer;
 function debouncedSearch(v){clearTimeout(timer);timer=setTimeout(()=>{state.search=v;renderSearch()},400)}
 function searchFromTop(v){clearTimeout(timer);timer=setTimeout(()=>{state.search=v;go("search")},400)}
 function toggleTopSearch(){document.getElementById("topSearch").classList.toggle("open");if(document.getElementById("topSearch").classList.contains("open"))document.getElementById("topSearchInput").focus()}
-function openDetail(item){
+
+// ===== Detail =====
+async function openDetail(item){
  state.detail=item;
  document.getElementById("detailBackdrop").style.backgroundImage=`url("${item.backdrop}")`;
  document.getElementById("detailTitle").textContent=item.title;
  document.getElementById("detailRating").textContent="★ "+item.rating;
- document.getElementById("detailYear").textContent=item.year;
+ document.getElementById("detailYear").textContent=item.year||"-";
  document.getElementById("detailType").textContent=item.type;
- document.getElementById("detailOverview").textContent=item.overview;
+ document.getElementById("detailOverview").textContent=item.overview||"Tidak ada deskripsi.";
  document.getElementById("watchBtn").textContent=state.watch.includes(item.id)?"✓ Tersimpan":"＋ Daftarku";
+
  const box=document.getElementById("episodeBox"), list=document.getElementById("episodeList");
- if(item.type==="TV"&&item.episodes?.length){
-  box.style.display="block";list.innerHTML="";
-  item.episodes.forEach(ep=>{
-   const d=document.createElement("div");d.className="episode";d.onclick=()=>playItem(item,ep);
-   d.innerHTML=`<img src="${esc(ep.still||item.poster)}" alt=""><div class="grow"><strong>E${ep.ep} — ${esc(ep.title)}</strong><br><small>${esc(ep.dur)} · Putar episode</small></div><span>▶</span>`;
-   list.appendChild(d)
-  })
- }else box.style.display="none";
+ list.innerHTML="";
+
+ if (apiAvailable && item.slug) {
+   // Fetch detail + episodes from API
+   const detailRes = await apiGet("api/movies/detail/" + encodeURIComponent(item.slug));
+   if (detailRes) {
+     if (detailRes.overview) document.getElementById("detailOverview").textContent = detailRes.overview;
+     if (detailRes.backdrop) document.getElementById("detailBackdrop").style.backgroundImage=`url("${detailRes.backdrop}")`;
+   }
+
+   if(item.type==="TV"){
+     const epRes = await apiGet("api/movies/episodes/" + encodeURIComponent(item.slug) + "?season=1");
+     if (epRes && epRes.episodes && epRes.episodes.length) {
+       box.style.display="block";
+       epRes.episodes.forEach(ep=>{
+        const d=document.createElement("div");d.className="episode";d.onclick=()=>playItem(item,ep);
+        const still = ep.still || item.poster;
+        d.innerHTML=`<img src="${esc(still)}" alt="" onerror="this.style.display='none'"><div class="grow"><strong>E${ep.episode} — ${esc(ep.title||('Episode '+ep.episode))}</strong><br><small>${esc(ep.runtime?ep.runtime+'m':'')} · Putar episode</small></div><span>▶</span>`;
+        list.appendChild(d)
+       });
+     } else {
+       box.style.display="none";
+     }
+   } else {
+     box.style.display="none";
+   }
+ } else {
+   // Demo episodes
+   if(item.type==="TV"&&item.episodes?.length){
+    box.style.display="block";
+    item.episodes.forEach(ep=>{
+     const d=document.createElement("div");d.className="episode";d.onclick=()=>playItem(item,ep);
+     d.innerHTML=`<img src="${esc(ep.still||item.poster)}" alt=""><div class="grow"><strong>E${ep.ep} — ${esc(ep.title)}</strong><br><small>${esc(ep.dur)} · Putar episode</small></div><span>▶</span>`;
+     list.appendChild(d)
+    })
+   }else box.style.display="none";
+ }
+
  document.getElementById("detailOverlay").classList.add("show");
 }
+
 function closeDetail(){document.getElementById("detailOverlay").classList.remove("show")}
 function toggleWatch(id){
  const i=state.watch.indexOf(id);if(i>=0)state.watch.splice(i,1);else state.watch.unshift(id);
@@ -370,16 +549,48 @@ function toggleDetailWatch(){if(state.detail)toggleWatch(state.detail.id);openDe
 function playHero(){playItem(state.hero)}
 function detailHero(){openDetail(state.hero)}
 function playDetail(){if(state.detail)playItem(state.detail)}
-function mediaFor(item){return state.media.trim()||DEMO_MEDIA}
+
+// ===== Stream Resolver =====
+function buildEmbedUrls(tmdbId, isTv, season, episode) {
+  if (isTv) {
+    return [
+      `https://vidsrc.to/embed/tv/${tmdbId}/${season}/${episode}`,
+      `https://vidlink.pro/tv/${tmdbId}/${season}/${episode}`,
+      `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1&s=${season}&e=${episode}`,
+      `https://www.2embed.cc/embedtv/${tmdbId}&s=${season}&e=${episode}`
+    ];
+  }
+  return [
+    `https://vidsrc.to/embed/movie/${tmdbId}`,
+    `https://vidlink.pro/movie/${tmdbId}`,
+    `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1`,
+    `https://www.2embed.cc/embed/${tmdbId}`
+  ];
+}
+
+function mediaFor(item, ep=null){
+  if (state.media.trim()) return state.media.trim();
+  // If item has tmdbId, build embed fallback URL
+  if (item.tmdbId) {
+    const isTv = item.type === "TV";
+    const season = ep ? (ep.season || 1) : 1;
+    const episode = ep ? (ep.episode || ep.ep || 1) : 1;
+    // Return first fallback embed (vidsrc.to) — browser can iframe or direct-play if supported
+    const embeds = buildEmbedUrls(item.tmdbId, isTv, season, episode);
+    return embeds[0];
+  }
+  return DEMO_MEDIA;
+}
+
 let hls=null;
 function playItem(item,ep=null){
  const video=document.getElementById("video");
- const title=ep?`${item.title} — E${ep.ep}: ${ep.title}`:item.title;
+ const title=ep?`${item.title} — E${ep.episode||ep.ep}: ${ep.title||('Episode '+(ep.episode||ep.ep))}`:item.title;
  document.getElementById("playerTitle").textContent=title;
- document.getElementById("playerNote").textContent=state.media?"Media URL tersimpan":"Demo media";
+ document.getElementById("playerNote").textContent=state.media?"Media URL tersimpan":"Stream Resolver (embed)";
  document.getElementById("player").classList.add("show");
  closeDetail();
- const url=mediaFor(item);
+ const url=mediaFor(item,ep);
  if(hls){hls.destroy();hls=null}
  video.pause();video.removeAttribute("src");video.load();
  const resume=state.progress[item.id]||0;
@@ -391,11 +602,13 @@ function playItem(item,ep=null){
  }
  video.dataset.itemId=item.id;
 }
+
 function closePlayer(){
  const v=document.getElementById("video");v.pause();
  if(hls){hls.destroy();hls=null}
  document.getElementById("player").classList.remove("show");
 }
+
 const video=document.getElementById("video");
 video.addEventListener("timeupdate",()=>{
  const id=Number(video.dataset.itemId);if(!id||!video.duration)return;
@@ -403,16 +616,19 @@ video.addEventListener("timeupdate",()=>{
  if(p>=.95){delete state.progress[id]} else if(p>=.05){state.progress[id]=p}
  save();
 });
+
 function toggleSettings(){document.getElementById("settings").classList.toggle("show");document.getElementById("mediaUrl").value=state.media}
 function saveMediaUrl(){
  state.media=document.getElementById("mediaUrl").value.trim();localStorage.setItem("ztream_media",state.media);
- document.getElementById("settings").classList.remove("show");toast(state.media?"URL media disimpan":"Kembali ke demo media")
+ document.getElementById("settings").classList.remove("show");toast(state.media?"URL media disimpan":"Kembali ke stream resolver")
 }
 function toast(t){const e=document.getElementById("toast");e.textContent=t;e.classList.add("show");clearTimeout(window._toast);window._toast=setTimeout(()=>e.classList.remove("show"),1800)}
+
 window.addEventListener("scroll",()=>document.getElementById("topbar").classList.toggle("scrolled",scrollY>40));
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeDetail();closePlayer();document.getElementById("settings").classList.remove("show")}});
-function init(){renderHome();renderChips();renderSearch();renderList()}
-init();
+
+// ===== Init =====
+initCatalog();
 </script>
 </body>
 </html>

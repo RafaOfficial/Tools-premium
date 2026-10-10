@@ -2,763 +2,159 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>RafaXMods — Website Jualan & Tools All Sosmed Gratis</title>
 <meta name="title" content="RafaXMods - Website Jualan & Tools All Sosmed Gratis">
 <meta name="description" content="RafaXMods adalah website jualan dan tools gratis untuk membantu kebutuhan sosial media. Tersedia fitur download TikTok, HD Image Enhancer, Search Music, Fake ML, Wallpaper, Generate Email, dan banyak fitur menarik lainnya.">
 <meta name="keywords" content="rafaxmods, Rafa Official, website jualan, tools sosmed, downloader tiktok, hd image, fake ml, search music, fake ff, fake story, wallpaper hd, generate email, enc script, website keren, tools gratis">
 <meta name="author" content="RafaXMods">
 <meta name="robots" content="index, follow">
-<meta name="theme-color" content="#5b7cfa">
-
-<link rel="icon" type="image/png" href="https://img2.pixhost.to/images/8330/733379870_lanz-mikasamd.jpg">
-
+<meta name="theme-color" content="#2563ff">
+<link rel="icon" type="image/png" href="https://api.nexray.eu.cc/eXXcMh.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Inter',sans-serif;
-scroll-behavior:smooth;
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+:root{
+--blue:#2563ff;--blue-2:#5b8cff;--sky:#cfe0ff;--ice:#eef4ff;--ink:#0c1a45;--body:#47527a;--muted:#8791b3;
+--line:rgba(37,99,255,.14);--shadow:0 1px 2px rgba(37,99,255,.08),0 12px 32px -8px rgba(37,99,255,.22);
+--ease:cubic-bezier(.2,.8,.2,1)
 }
-
-h1,h2,.name,.badge,.side-profile h2,.ads-box h2,.section-title{
-font-family:'Poppins',sans-serif;
-}
-
-/* BODY */
-body{
-background:#05060d;
-min-height:100vh;
-overflow-x:hidden;
-padding-top:90px;
-color:#f4f6ff;
-}
-
-body::before{
-content:'';
-position:fixed;
-inset:0;
-background:
-radial-gradient(ellipse 60% 40% at 50% 0%,rgba(91,124,250,.28),transparent 60%),
-radial-gradient(ellipse 70% 45% at 15% 55%,rgba(60,80,200,.16),transparent 60%),
-radial-gradient(ellipse 70% 45% at 85% 90%,rgba(91,124,250,.20),transparent 60%);
-z-index:-1;
-}
-
-.circle1{
-position:fixed;
-width:380px;
-height:380px;
-border-radius:50%;
-background:rgba(91,124,250,.18);
-top:-120px;
-left:-120px;
-filter:blur(90px);
-z-index:-1;
-}
-
-.circle2{
-position:fixed;
-width:420px;
-height:420px;
-border-radius:50%;
-background:rgba(124,147,255,.16);
-bottom:-150px;
-right:-150px;
-filter:blur(100px);
-z-index:-1;
-}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:var(--ink);min-height:100vh;overflow-x:hidden;padding-top:92px;
+padding-bottom:env(safe-area-inset-bottom,0px)}
+h1,h2,.brand,.name,.sec-title,.num{font-family:'Sora',sans-serif}
+body::before{content:'';position:fixed;inset:0;z-index:-2;background:
+radial-gradient(60% 40% at 50% -5%,#d6e4ff,transparent 70%),
+radial-gradient(50% 40% at 100% 60%,#e3edff,transparent 70%),
+radial-gradient(50% 40% at 0% 90%,#dfeaff,transparent 70%),#fff}
+.orb{position:fixed;border-radius:50%;z-index:-1;opacity:.55;animation:drift 14s ease-in-out infinite alternate;
+background:radial-gradient(circle at 30% 28%,#fff,#9dbcff 45%,#2563ff 100%)}
+.orb.a{width:150px;height:150px;left:-50px;top:30%}
+.orb.b{width:90px;height:90px;right:6%;top:58%;animation-delay:-5s}
+@keyframes drift{to{transform:translate3d(30px,-50px,0)}}
 
 /* TOPBAR */
-.topbar{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:82px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:0 20px;
-background:rgba(9,12,26,.75);
-backdrop-filter:blur(16px);
--webkit-backdrop-filter:blur(16px);
-border-bottom:1px solid rgba(255,255,255,.08);
-box-shadow:0 8px 30px rgba(0,0,0,.55);
-z-index:999;
-}
-
-.logo-top{
-display:flex;
-align-items:center;
-gap:12px;
-}
-
-.logo-top img{
-width:42px;
-height:42px;
-border-radius:50%;
-border:2px solid rgba(124,147,255,.6);
-box-shadow:0 0 18px rgba(91,124,250,.5);
-}
-
-.logo-top span{
-font-family:'Poppins',sans-serif;
-font-size:22px;
-font-weight:700;
-letter-spacing:.2px;
-color:#f4f6ff;
-}
-
-.top-right{
-display:flex;
-align-items:center;
-gap:14px;
-}
-
-.notif-btn{
-width:50px;
-height:50px;
-border-radius:16px;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:22px;
-background:linear-gradient(145deg,#1a2044,#0e1230);
-border:1px solid rgba(124,147,255,.35);
-box-shadow:
-0 0 20px rgba(91,124,250,.25),
-inset 0 1px 0 rgba(255,255,255,.05);
-}
-
-.hamburger{
-font-size:32px;
-cursor:pointer;
-color:#f4f6ff;
-}
+.topbar{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:12px;right:12px;height:64px;padding:0 14px;display:flex;justify-content:space-between;
+align-items:center;background:rgba(255,255,255,.78);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line);
+border-radius:22px;box-shadow:var(--shadow);z-index:999;max-width:1080px;margin:auto}
+.logo-top{display:flex;align-items:center;gap:12px}
+.logo-top img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--blue-2)}
+.brand{font-size:20px;font-weight:700}
+.top-right{display:flex;align-items:center;gap:10px}
+.icon-btn{width:42px;height:42px;display:grid;place-items:center;border-radius:14px;background:var(--ice);border:1px solid var(--line);font-size:19px;cursor:pointer;color:var(--blue);transition:transform .25s var(--ease)}
+.icon-btn:hover{transform:translateY(-2px)}
 
 /* SIDEBAR */
-.sidebar{
-position:fixed;
-top:0;
-right:-320px;
-width:290px;
-height:100%;
-padding:20px;
-overflow-y:auto;
-background:linear-gradient(180deg,#0b0e22,#05060d);
-border-left:1px solid rgba(124,147,255,.25);
-box-shadow:-20px 0 60px rgba(0,0,0,.6);
-transition:.4s;
-z-index:9999;
-}
-
-.sidebar.active{
-right:0;
-}
-
-.close-sidebar{
-width:46px;
-height:46px;
-display:flex;
-justify-content:center;
-align-items:center;
-border-radius:14px;
-font-size:22px;
-font-weight:bold;
-color:#f4f6ff;
-background:linear-gradient(145deg,#1a2044,#0e1230);
-border:1px solid rgba(124,147,255,.35);
-box-shadow:0 0 20px rgba(91,124,250,.25);
-cursor:pointer;
-}
-
-.side-profile{
-text-align:center;
-margin-top:20px;
-}
-
-.side-pp{
-width:110px;
-height:110px;
-border-radius:50%;
-object-fit:cover;
-border:3px solid rgba(124,147,255,.5);
-box-shadow:0 0 30px rgba(91,124,250,.45);
-}
-
-.side-profile h2{
-margin-top:15px;
-font-size:24px;
-color:#f4f6ff;
-}
-
-.side-profile p{
-margin-top:6px;
-font-size:14px;
-color:#8b93b8;
-}
-
-.menu-list{
-margin-top:30px;
-display:flex;
-flex-direction:column;
-gap:14px;
-}
-
-.menu-list a{
-text-decoration:none;
-padding:16px;
-border-radius:18px;
-background:linear-gradient(160deg,#10142c,#0b0e1f);
-border:1px solid rgba(255,255,255,.07);
-color:#f4f6ff;
-font-weight:600;
-font-size:14.5px;
-transition:.3s;
-display:block;
-}
-
-.menu-list a:hover{
-transform:translateY(-3px);
-border-color:rgba(124,147,255,.5);
-background:linear-gradient(160deg,#161c3c,#0d1128);
-box-shadow:0 8px 24px rgba(91,124,250,.35);
-}
-
-/* ============ HERO ============ */
-#main{
-padding:0 20px;
-text-align:center;
-}
-
-.hero{
-max-width:640px;
-margin:0 auto 50px;
-padding-top:10px;
-}
-
-.eyebrow{
-display:inline-flex;
-align-items:center;
-gap:8px;
-padding:8px 18px;
-border-radius:30px;
-background:rgba(91,124,250,.1);
-border:1px solid rgba(124,147,255,.3);
-color:#a5b4ff;
-font-size:12.5px;
-font-weight:600;
-letter-spacing:.5px;
-text-transform:uppercase;
-margin-bottom:24px;
-}
-
-.eyebrow .dot{
-width:7px;
-height:7px;
-border-radius:50%;
-background:#3ddc84;
-box-shadow:0 0 8px #3ddc84;
-}
-
-.title{
-font-size:38px;
-font-weight:700;
-line-height:1.25;
-color:#f4f6ff;
-letter-spacing:-.3px;
-}
-
-.title .accent{
-background:linear-gradient(90deg,#5b7cfa,#a5b4ff);
--webkit-background-clip:text;
-background-clip:text;
-color:transparent;
-}
-
-.subtitle{
-margin-top:18px;
-font-size:15.5px;
-line-height:1.7;
-color:#8b93b8;
-padding:0 6px;
-}
-
-/* PROFILE STRIP */
-.profile-wrap{
-display:flex;
-flex-direction:column;
-align-items:center;
-margin-top:36px;
-}
-
-.logo{
-width:130px;
-height:130px;
-border-radius:50%;
-object-fit:cover;
-border:3px solid rgba(124,147,255,.55);
-box-shadow:0 0 50px rgba(91,124,250,.5);
-animation:float 3s ease-in-out infinite;
-}
-
-@keyframes float{
-0%,100%{transform:translateY(0);}
-50%{transform:translateY(-8px);}
-}
-
-.name{
-margin-top:16px;
-font-size:22px;
-font-weight:700;
-display:flex;
-align-items:center;
-gap:8px;
-color:#f4f6ff;
-}
-
-.check{
-background:linear-gradient(145deg,#5b7cfa,#324adf);
-padding:4px 8px;
-border-radius:50%;
-font-size:12px;
-box-shadow:0 0 14px rgba(91,124,250,.6);
-}
-
-.status-row{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:10px;
-margin-top:14px;
-}
-
-.status{
-padding:8px 16px;
-border-radius:20px;
-background:rgba(91,124,250,.12);
-color:#c7d1ff;
-font-weight:600;
-font-size:13px;
-border:1px solid rgba(124,147,255,.35);
-}
-
-.clock{
-font-size:14px;
-color:#8b93b8;
-}
-
-.visitor{
-color:#8b93b8;
-font-weight:600;
-font-size:13px;
-}
-
-/* SOCIAL */
-.social{
-margin:26px 0 8px;
-display:flex;
-justify-content:center;
-gap:16px;
-}
-
-.btn-icon{
-width:54px;
-height:54px;
-border-radius:16px;
-display:flex;
-justify-content:center;
-align-items:center;
-border:1px solid rgba(255,255,255,.1);
-box-shadow:0 8px 24px rgba(0,0,0,.4);
-transition:.3s;
-background:linear-gradient(145deg,#1a2044,#0e1230);
-}
-
-.btn-icon:hover{
-transform:translateY(-5px);
-box-shadow:0 10px 28px rgba(91,124,250,.45);
-}
-
-.btn-icon img{
-width:24px;
-}
-
-/* MUSIC BUTTON */
-.music-btn{
-padding:12px 26px;
-border:none;
-border-radius:20px;
-background:linear-gradient(145deg,#5b7cfa,#324adf);
-box-shadow:0 8px 24px rgba(91,124,250,.4);
-color:white;
-font-weight:600;
-font-size:14px;
-cursor:pointer;
-margin:22px 0 6px;
-transition:.3s;
-}
-
-.music-btn:hover{
-transform:translateY(-3px);
-box-shadow:0 12px 28px rgba(91,124,250,.55);
-}
-
-.desc{
-font-size:14.5px;
-line-height:1.6;
-color:#8b93b8;
-margin-top:14px;
-min-height:22px;
-padding:0 12px;
-}
-
-/* ============ SECTION HEADER (fitur) ============ */
-.section-head{
-max-width:640px;
-margin:10px auto 26px;
-text-align:left;
-}
-
-.section-title{
-font-size:22px;
-font-weight:700;
-color:#f4f6ff;
-display:flex;
-align-items:center;
-gap:10px;
-}
-
-.section-title .bar{
-width:5px;
-height:22px;
-border-radius:4px;
-background:linear-gradient(180deg,#5b7cfa,#a5b4ff);
-box-shadow:0 0 12px rgba(91,124,250,.6);
-}
-
-.section-sub{
-margin-top:8px;
-margin-left:15px;
-font-size:14px;
-color:#8b93b8;
-}
-
-/* GRID */
-.container{
-max-width:640px;
-margin:0 auto;
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:16px;
-text-align:left;
-}
-
-.card{
-text-decoration:none;
-color:#f4f6ff;
-padding:22px 18px;
-border-radius:22px;
-background:linear-gradient(160deg,#10142c,#0a0d1f);
-border:1px solid rgba(255,255,255,.07);
-box-shadow:
-0 0 0 rgba(91,124,250,0),
-inset 0 1px 0 rgba(255,255,255,.04);
-transition:.3s;
-position:relative;
-overflow:hidden;
-display:flex;
-flex-direction:column;
-gap:10px;
-}
-
-.card::before{
-content:'';
-position:absolute;
-inset:0;
-background:radial-gradient(circle at 30% 20%,rgba(91,124,250,.16),transparent 60%);
-opacity:0;
-transition:.3s;
-}
-
-.card:hover{
-transform:translateY(-6px);
-border-color:rgba(124,147,255,.5);
-box-shadow:0 14px 32px rgba(91,124,250,.35);
-}
-
-.card:hover::before{
-opacity:1;
-}
-
-.card-icon{
-width:42px;
-height:42px;
-border-radius:13px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:19px;
-background:rgba(91,124,250,.12);
-border:1px solid rgba(124,147,255,.3);
-position:relative;
-z-index:1;
-overflow:hidden;
-}
-
-.card-icon img{
-width:24px;
-height:24px;
-object-fit:contain;
-}
-
-.card h2{
-font-size:14.5px;
-font-weight:600;
-position:relative;
-z-index:1;
-line-height:1.35;
-}
-
-.click-count{
-display:block;
-font-size:11px;
-color:#8b93b8;
-margin-top:2px;
-font-weight:400;
-position:relative;
-z-index:1;
-}
-
-/* TRUST STRIP */
-.trust{
-max-width:640px;
-margin:46px auto 0;
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:12px;
-}
-
-.trust-item{
-padding:18px 10px;
-border-radius:18px;
-background:linear-gradient(160deg,#10142c,#0a0d1f);
-border:1px solid rgba(255,255,255,.07);
-text-align:center;
-}
-
-.trust-num{
-font-size:20px;
-font-weight:700;
-color:#f4f6ff;
-font-family:'Poppins',sans-serif;
-}
-
-.trust-label{
-margin-top:4px;
-font-size:11.5px;
-color:#8b93b8;
-font-weight:500;
-}
-
-/* FOOTER */
-.footer{
-max-width:640px;
-margin:44px auto 0;
-padding:26px 20px;
-text-align:center;
-border-top:1px solid rgba(255,255,255,.07);
-}
-
-.footer-brand{
-font-family:'Poppins',sans-serif;
-font-size:16px;
-font-weight:700;
-color:#f4f6ff;
-margin-bottom:6px;
-}
-
-.footer-text{
-font-size:12.5px;
-font-weight:500;
-color:#8b93b8;
-line-height:1.6;
-}
-
-/* IKLAN */
-.ads-popup{
-position:fixed;
-inset:0;
-background:rgba(2,3,10,.8);
-backdrop-filter:blur(6px);
-display:flex;
-justify-content:center;
-align-items:center;
-padding:20px;
-z-index:999999;
-}
-
-.ads-box{
-width:100%;
-max-width:360px;
-padding:26px;
-border-radius:26px;
-text-align:center;
-background:linear-gradient(160deg,#10142c,#070a18);
-border:1px solid rgba(124,147,255,.3);
-box-shadow:
-0 0 60px rgba(91,124,250,.3),
-0 20px 60px rgba(0,0,0,.6);
-animation:popup .4s ease;
-}
-
-.ads-top{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:18px;
-font-weight:600;
-font-size:13px;
-color:#8b93b8;
-}
-
-.ads-timer{
-width:44px;
-height:44px;
-display:flex;
-justify-content:center;
-align-items:center;
-border-radius:50%;
-font-size:16px;
-font-weight:700;
-color:#fff;
-background:linear-gradient(145deg,#5b7cfa,#324adf);
-box-shadow:0 0 18px rgba(91,124,250,.5);
-}
-
-.ads-img{
-width:100px;
-height:100px;
-border-radius:50%;
-object-fit:cover;
-margin-bottom:16px;
-border:3px solid rgba(124,147,255,.5);
-box-shadow:0 0 30px rgba(91,124,250,.45);
-}
-
-.ads-box h2{
-font-size:24px;
-font-weight:700;
-margin-bottom:12px;
-color:#f4f6ff;
-}
-
-.ads-box p{
-font-size:14.5px;
-line-height:1.6;
-color:#8b93b8;
-margin-bottom:22px;
-}
-
-.join-btn{
-display:block;
-text-decoration:none;
-padding:15px;
-border-radius:18px;
-font-weight:600;
-color:white;
-margin-bottom:14px;
-background:linear-gradient(145deg,#5b7cfa,#324adf);
-box-shadow:0 8px 24px rgba(91,124,250,.4);
-transition:.3s;
-}
-
-.join-btn:hover{
-transform:translateY(-4px);
-box-shadow:0 12px 28px rgba(91,124,250,.55);
-}
-
-.close-ads{
-width:100%;
-padding:15px;
-border:none;
-border-radius:18px;
-font-weight:600;
-font-size:14px;
-color:#8b93b8;
-cursor:pointer;
-background:rgba(255,255,255,.04);
-border:1px solid rgba(255,255,255,.1);
-}
-
-.close-ads:hover{
-background:rgba(255,255,255,.08);
-color:#f4f6ff;
-}
-
-/* CLICK NOTIF */
-.click-notif{
-position:fixed;
-bottom:20px;
-left:50%;
-transform:translateX(-50%) translateY(100px);
-background:rgba(91,124,250,.95);
-color:white;
-padding:12px 24px;
-border-radius:30px;
-font-size:13px;
-font-weight:600;
-box-shadow:0 10px 30px rgba(91,124,250,.4);
-z-index:1000000;
-transition:transform .3s cubic-bezier(.175,.885,.32,1.275);
-pointer-events:none;
-max-width:88vw;
-text-align:center;
-}
-
-.click-notif.show{
-transform:translateX(-50%) translateY(0);
-}
-
-@keyframes popup{
-from{transform:scale(.7);opacity:0;}
-to{transform:scale(1);opacity:1;}
-}
-
-@media(max-width:700px){
-.title{font-size:27px;}
-.subtitle{font-size:14px;}
-.logo{width:110px;height:110px;}
-.name{font-size:19px;}
-.card h2{font-size:13.5px;}
-.trust{grid-template-columns:repeat(3,1fr);}
-}
+.sidebar{position:fixed;top:0;right:0;width:290px;max-width:86vw;height:100%;padding:20px;overflow-y:auto;background:#fff;border-left:1px solid var(--line);
+box-shadow:-24px 0 60px rgba(37,99,255,.14);transform:translateX(105%);transition:transform .5s var(--ease);z-index:9999}
+.sidebar.active{transform:none}
+.side-profile{text-align:center;margin-top:18px}
+.side-pp{width:104px;height:104px;border-radius:50%;object-fit:cover;border:3px solid var(--blue-2);box-shadow:0 14px 34px -8px rgba(37,99,255,.45)}
+.side-profile h2{margin-top:14px;font-size:22px}
+.side-profile p{margin-top:4px;font-size:13.5px;color:var(--blue);font-weight:600}
+.menu-list{margin-top:26px;display:flex;flex-direction:column;gap:12px}
+.menu-list a{text-decoration:none;padding:15px 16px;border-radius:16px;background:var(--ice);border:1px solid var(--line);color:var(--ink);font-weight:600;font-size:14.5px;transition:.3s var(--ease)}
+.menu-list a:hover{transform:translateX(-4px);background:var(--blue);color:#fff}
+
+/* HERO */
+main{max-width:1080px;margin:auto;padding:0 18px}
+.hero{text-align:center;padding:28px 0 12px}
+.live{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:99px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--blue);box-shadow:var(--shadow)}
+.live i{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 0 rgba(34,197,94,.6);animation:ping 1.8s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 9px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+.title{margin:18px auto 0;font-size:clamp(30px,6.4vw,58px);line-height:1.12;font-weight:800;letter-spacing:-.02em;max-width:15em;
+background:linear-gradient(120deg,var(--ink) 20%,var(--blue) 80%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.subtitle{margin:16px auto 0;max-width:34em;color:var(--body);font-size:16px;line-height:1.7}
+
+/* 3D VIDEO STAGE */
+.stage{margin:34px auto 0;max-width:760px;perspective:1100px;position:relative}
+.float{animation:float 6s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-12px)}}
+.frame{position:relative;transform-style:preserve-3d;transform:rotateX(var(--rx,6deg)) rotateY(var(--ry,-8deg));transition:transform .35s var(--ease);
+border-radius:28px;padding:10px;background:linear-gradient(145deg,#fff,var(--sky));border:1px solid #fff;
+box-shadow:0 2px 0 #fff inset,0 50px 80px -30px rgba(37,99,255,.55),0 18px 30px -12px rgba(37,99,255,.3)}
+.frame video{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:20px;background:var(--ice)}
+.frame::after{content:'';position:absolute;inset:10px;border-radius:20px;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.35),transparent 40%)}
+.chip{position:absolute;left:-14px;bottom:26px;transform:translateZ(70px);display:flex;align-items:center;gap:10px;padding:8px 16px 8px 8px;border-radius:99px;
+background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border:1px solid var(--line);box-shadow:0 18px 34px -10px rgba(37,99,255,.45);z-index:2}
+.chip img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid var(--blue-2)}
+.name{font-weight:700;font-size:15px;text-align:left}
+.name .check{color:var(--blue);font-size:13px}
+.chip small{display:block;font-size:11.5px;color:var(--muted);font-weight:500;text-align:left}
+.shadow{width:70%;height:22px;margin:22px auto 0;border-radius:50%;background:radial-gradient(closest-side,rgba(37,99,255,.35),transparent);filter:blur(6px)}
+
+.status-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:10px}
+.pill{padding:9px 16px;border-radius:99px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--body)}
+.pill.blue{background:var(--blue);color:#fff;border-color:var(--blue)}
+.social{display:flex;justify-content:center;gap:14px;margin-top:22px}
+.social a{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);transition:transform .3s var(--ease)}
+.social a:hover{transform:translateY(-5px) rotate(-4deg)}
+.social img{width:28px;height:28px}
+.music-btn{margin-top:22px;padding:13px 26px;border:0;border-radius:16px;cursor:pointer;font:600 14.5px 'Plus Jakarta Sans';color:#fff;
+background:linear-gradient(135deg,var(--blue-2),var(--blue));box-shadow:0 14px 28px -10px rgba(37,99,255,.7),inset 0 1px 0 rgba(255,255,255,.4);transition:transform .25s var(--ease)}
+.music-btn:hover{transform:translateY(-3px)}.music-btn:active{transform:scale(.97)}
+.desc{margin-top:18px;min-height:24px;color:var(--blue);font-weight:600;font-size:14.5px}
+
+/* FEATURES */
+.sec-head{margin:56px 0 22px;text-align:center}
+.sec-title{font-size:clamp(22px,4vw,32px);font-weight:800}
+.sec-sub{margin-top:8px;color:var(--body);font-size:15px}
+.container{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px;perspective:1000px}
+.card{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 16px 20px;text-align:center;text-decoration:none;color:var(--ink);
+background:linear-gradient(160deg,#fff,var(--ice));border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);transform-style:preserve-3d;
+transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .3s var(--ease),box-shadow .3s}
+.card:hover{box-shadow:0 30px 50px -18px rgba(37,99,255,.45)}
+.card::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;
+background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.95),transparent 55%)}
+.card:hover::after{opacity:.8}
+.card-icon{width:62px;height:62px;display:grid;place-items:center;border-radius:20px;font-size:28px;background:#fff;border:1px solid var(--line);
+box-shadow:0 14px 22px -10px rgba(37,99,255,.45);transform:translateZ(38px)}
+.card-icon img{width:32px;height:32px;object-fit:contain;border-radius:8px}
+.card h2{font-size:15.5px;font-weight:700;transform:translateZ(22px)}
+.click-count{font-size:12px;font-weight:600;color:var(--blue);background:var(--sky);padding:5px 11px;border-radius:99px;transform:translateZ(14px)}
+
+/* TRUST */
+.trust{margin:56px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.trust>div{padding:22px 10px;text-align:center;border-radius:22px;background:linear-gradient(150deg,var(--blue-2),var(--blue));color:#fff;box-shadow:0 22px 36px -16px rgba(37,99,255,.7)}
+.num{font-size:clamp(24px,5vw,38px);font-weight:800}
+.lbl{margin-top:4px;font-size:13px;opacity:.9}
+.footer{margin:48px 0 28px;padding:28px 10px;text-align:center;border-top:1px solid var(--line)}
+.footer b{font-family:'Sora';font-size:20px}
+.footer p{margin-top:8px;color:var(--muted);font-size:13px;line-height:1.6}
+
+/* TOAST */
+.click-notif{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);opacity:0;pointer-events:none;max-width:90vw;
+padding:13px 20px;border-radius:16px;background:var(--ink);color:#fff;font-size:13.5px;font-weight:600;box-shadow:0 20px 40px -12px rgba(12,26,69,.5);transition:.4s var(--ease);z-index:99999}
+.click-notif.show{opacity:1;transform:translate(-50%,0)}
+
+/* ADS */
+.ads-popup{position:fixed;inset:0;display:grid;place-items:center;padding:18px;background:rgba(12,26,69,.45);backdrop-filter:blur(8px);z-index:100000}
+.ads-box{width:100%;max-width:380px;padding:20px;text-align:center;background:#fff;border-radius:28px;box-shadow:0 40px 80px -20px rgba(37,99,255,.6);animation:pop .6s var(--ease)}
+@keyframes pop{from{transform:perspective(800px) rotateX(18deg) scale(.9);opacity:0}}
+.ads-top{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:13px;color:var(--blue)}
+.ads-timer{width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:var(--ice);border:1px solid var(--line);color:var(--ink)}
+.ads-img{width:104px;height:104px;border-radius:50%;object-fit:cover;margin:18px auto 0;display:block;border:3px solid var(--blue-2);box-shadow:0 16px 30px -10px rgba(37,99,255,.5)}
+.ads-box h2{margin-top:14px;font-size:21px}
+.ads-box p{margin-top:8px;color:var(--body);font-size:14px;line-height:1.6}
+.join-btn{display:block;margin-top:16px;padding:14px;border-radius:16px;text-decoration:none;color:#fff;font-weight:700;font-size:14.5px;background:linear-gradient(135deg,var(--blue-2),var(--blue));box-shadow:0 14px 26px -10px rgba(37,99,255,.7)}
+.close-ads{margin-top:10px;width:100%;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--ice);color:var(--body);font:600 13.5px 'Plus Jakarta Sans';cursor:pointer}
+
+a:focus-visible,button:focus-visible,.icon-btn:focus-visible{outline:3px solid var(--blue-2);outline-offset:3px}
+@media(max-width:560px){.container{grid-template-columns:repeat(2,1fr);gap:12px}.card{padding:20px 10px 16px}.chip{left:6px;bottom:18px}.trust{gap:8px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
-
 <body>
-
-<div class="circle1"></div>
-<div class="circle2"></div>
-
-<!-- MINI NOTIFICATION -->
+<div class="orb a"></div><div class="orb b"></div>
 <div id="clickNotif" class="click-notif"></div>
 
 <!-- IKLAN -->
 <div class="ads-popup" id="adsPopup">
 <div class="ads-box">
-<div class="ads-top">
-<span>📢 IKLAN RAFAXMODS</span>
-<div class="ads-timer" id="adsTimer">8</div>
-</div>
-<img src="https://img2.pixhost.to/images/8330/733379870_lanz-mikasamd.jpg" class="ads-img">
+<div class="ads-top"><span>📢 IKLAN RAFAXMODS</span><div class="ads-timer" id="adsTimer">8</div></div>
+<img src="https://api.nexray.eu.cc/eXXcMh.png" class="ads-img" alt="RafaXMods">
 <h2>RafaXMods Share Code</h2>
 <p>Join saluran RafaXMods untuk mendapatkan informasi terbaru, share code gratis, update fitur website, dan tools premium lainnya ⚡</p>
 <a href="https://whatsapp.com/channel/0029Vb7pLCF35fLqMBUCMP1D" target="_blank" class="join-btn">🚀 JOIN CHANNEL WA</a>
@@ -766,28 +162,17 @@ to{transform:scale(1);opacity:1;}
 </div>
 </div>
 
-<!-- AUDIO -->
-<audio id="music" autoplay loop>
-<source src="https://d.uguu.se/pcUXNfFO.opus">
-</audio>
+<audio id="music" autoplay loop><source src="https://d.uguu.se/pcUXNfFO.opus"></audio>
 
-<!-- TOPBAR -->
 <header class="topbar">
-<div class="logo-top">
-<img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png">
-<span>RafaXMods</span>
-</div>
-<div class="top-right">
-<div class="notif-btn">🔔</div>
-<div class="hamburger" onclick="toggleMenu()">☰</div>
-</div>
+<div class="logo-top"><img src="https://api.nexray.eu.cc/eXXcMh.png" alt="RafaXMods"><span class="brand">RafaXMods</span></div>
+<div class="top-right"><div class="icon-btn">🔔</div><div class="icon-btn" onclick="toggleMenu()" role="button" tabindex="0" aria-label="Menu">☰</div></div>
 </header>
 
-<!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
-<div class="close-sidebar" onclick="toggleMenu()">✕</div>
+<aside class="sidebar" id="sidebar">
+<div class="icon-btn" onclick="toggleMenu()" role="button" tabindex="0" aria-label="Tutup">✕</div>
 <div class="side-profile">
-<img src="https://img2.pixhost.to/images/8330/733379870_lanz-mikasamd.jpg" class="side-pp">
+<img src="https://api.nexray.eu.cc/eXXcMh.png" class="side-pp" alt="RafaXMods">
 <h2>RafaXMods</h2>
 <p>Informasi Menu List ⚡</p>
 </div>
@@ -797,326 +182,163 @@ to{transform:scale(1);opacity:1;}
 <a href="https://chat.whatsapp.com/ILpvo3YUuE63U6oxlFyfT4" target="_blank">👑 Grup Bot RafaXMods</a>
 <a href="https://t.me/ErroBaiyles" target="_blank">📢 Saluran Tele</a>
 </div>
+</aside>
+
+<main>
+<section class="hero">
+<div class="live"><i></i> Online 24 Jam Nonstop</div>
+<h1 class="title">Satu Website, Semua Kebutuhan Sosial Media Kamu Beres Di Sini</h1>
+<p class="subtitle">Download, edit, dan kelola konten sosial media tanpa ribet. Gratis, cepat, dan terus diperbarui — dirancang untuk kamu yang nggak mau buang waktu pindah-pindah aplikasi.</p>
+
+<div class="stage" id="stage">
+<div class="float">
+<div class="frame" id="frame">
+<video src="https://api.nexray.eu.cc/H7BMTO.mp4" autoplay loop muted playsinline preload="auto"></video>
+<div class="chip">
+<img src="https://api.nexray.eu.cc/eXXcMh.png" alt="RafaXMods">
+<div><div class="name">RafaXMods <span class="check">✔</span></div><small>Official Website</small></div>
 </div>
-
-<!-- MAIN -->
-<div id="main">
-
-<!-- HERO -->
-<div class="hero">
-
-<div class="eyebrow"><span class="dot"></span> Online 24 Jam Nonstop</div>
-
-<h1 class="title">
-Satu Website, Semua<br>
-<span class="accent">Kebutuhan Sosial Media</span><br>
-Kamu Beres Di Sini
-</h1>
-
-<p class="subtitle">
-Download, edit, dan kelola konten sosial media tanpa ribet.
-Gratis, cepat, dan terus diperbarui — dirancang untuk kamu yang
-nggak mau buang waktu pindah-pindah aplikasi.
-</p>
-
-<div class="profile-wrap">
-<img class="logo" src="https://img2.pixhost.to/images/8330/733379870_lanz-mikasamd.jpg">
-<div class="name">RafaXMods <span class="check">✔</span></div>
+</div>
+</div>
+<div class="shadow"></div>
+</div>
 
 <div class="status-row">
-<div class="status">🟢 Online 24 Jam</div>
-<div class="status clock" id="clock">00:00:00 WIB</div>
-</div>
-
-<div class="visitor" id="visitorDisplay" style="margin-top:12px;">💠 Total Melihat : Loading...</div>
+<div class="pill">🟢 Online 24 Jam</div>
+<div class="pill blue" id="clock">00:00:00 WIB</div>
+<div class="pill" id="visitorDisplay">💠 Total Melihat : Loading...</div>
 </div>
 
 <div class="social">
-<a href="https://whatsapp.com/channel/0029Vb7pLCF35fLqMBUCMP1D" target="_blank">
-<div class="btn-icon"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png"></div>
-</a>
-<a href="https://t.me/ErroBaiyles" target="_blank">
-<div class="btn-icon"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png"></div>
-</a>
-<a href="https://youtube.com" target="_blank">
-<div class="btn-icon"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"></div>
-</a>
+<a href="https://whatsapp.com/channel/0029Vb7pLCF35fLqMBUCMP1D" target="_blank" aria-label="WhatsApp"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt=""></a>
+<a href="https://t.me/ErroBaiyles" target="_blank" aria-label="Telegram"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt=""></a>
+<a href="https://youtube.com" target="_blank" aria-label="YouTube"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt=""></a>
 </div>
-
 <button class="music-btn" onclick="toggleMusic()">🎵 Music ON / OFF</button>
 <p class="desc" id="typing"></p>
+</section>
 
+<div class="sec-head">
+<div class="sec-title">Jelajahi Semua Fitur</div>
+<div class="sec-sub">Pilih tools yang kamu butuhkan, tinggal klik dan langsung pakai</div>
 </div>
+<div class="container" id="grid"></div>
 
-<!-- SECTION FITUR -->
-<div class="section-head">
-<div class="section-title"><span class="bar"></span>Jelajahi Semua Fitur</div>
-<div class="section-sub">Pilih tools yang kamu butuhkan, tinggal klik dan langsung pakai</div>
-</div>
-
-<div class="container">
-<a href="list.html" class="card" onclick="registerClick('🛒 List Jualan', event)">
-<div class="card-icon"><img src="https://cdn.simpleicons.org/shopify/95BF47"></div>
-<h2>List Jualan</h2>
-<span class="click-count" id="click-list">🔥 Dipencet: 1,204 kali</span>
-</a>
-<a href="music.html" class="card" onclick="registerClick('🎧 Search Music', event)">
-<div class="card-icon"><img src="https://cdn.simpleicons.org/soundcloud/FF5500"></div>
-<h2>Search Music</h2>
-<span class="click-count" id="click-music">🔥 Dipencet: 843 kali</span>
-</a>
-<a href="play-YouTube.html" class="card" onclick="registerClick('▶️ Play YouTube', event)">
-<div class="card-icon"><img src="https://cdn.simpleicons.org/youtube/FF0000"></div>
-<h2>Play YouTube</h2>
-<span class="click-count" id="click-youtube">🔥 Dipencet: 2,110 kali</span>
-</a>
-<a href="play-spotify.html" class="card" onclick="registerClick('▶️ Play Spotify', event)">
-<div class="card-icon"><img src="https://cdn.simpleicons.org/spotify/1DB954"></div>
-<h2>Play Spotify</h2>
-<span class="click-count" id="click-ampren">🔥 Dipencet: 2,000 kali</span>
-</a>
-<a href="amprem.html" class="card" onclick="registerClick('✅ Am Premium', event)">
-<div class="card-icon"><img src="https://kimi-web-img.kimi.ai/img/www.freeiconspng.com/f13d343f0154cde94819e554bca6891f32f69eb6.png"></div>
-<h2>Alight Motion</h2>
-<span class="click-count" id="click-spotify">🔥 Dipencet: 5,000 kali</span>
-</a>
-<a href="waifu.html" class="card" onclick="registerClick('🎨 Waifu Generator', event)">
-  <div class="card-icon">
-    <img src="https://cdn.simpleicons.org/starship/5b7cfa" alt="Waifu" style="width:32px;height:32px;">
-  </div>
-  <h2>Waifu Generator</h2>
-  <span class="click-count" id="click-waifu">🔥 Dipencet: 1.230 kali</span>
-</a>
-<a href="remove.html" class="card" onclick="registerClick('🖼️ Remove Background', event)">
-<div class="card-icon"><img src="https://cdn.simpleicons.org/removedotbg/FFFFFF"></div>
-<h2>Remove Background</h2>
-<span class="click-count" id="click-removebg">🔥 Dipencet: 500 kali</span>
-</a>
-<a href="wink.html" class="card" onclick="registerClick('✨ Wink Foto Enhancer', event)">
-  <div class="card-icon"><img src="https://wink.ai/favicon.ico" alt="Wink" style="width:40px;height:40px;border-radius:10px;"></div>
-  <h2>Wink Foto Enhancer</h2>
-  <span class="click-count" id="click-wink">🔥 Dipencet: 700 kali</span>
-</a>
-<a href="ig.html" class="card" onclick="registerClick('📥 IG Download', event)">
-<div class="card-icon"><img src="https://cdn.simpleicons.org/instagram/E4405F"></div>
-<h2>IG Download</h2>
-<span class="click-count" id="click-ig">🔥 Dipencet: 1,432 kali</span>
-</a>
-<a href="tiktok.html" class="card" onclick="registerClick('🎵 TikTok Downloader', event)">
-<div class="card-icon"><img src="https://cdn.simpleicons.org/tiktok/FFFFFF"></div>
-<h2>TikTok Downloader</h2>
-<span class="click-count" id="click-tiktok">🔥 Dipencet: 3,490 kali</span>
-</a>
-<a href="tiktokphotosearch.html" class="card" onclick="registerClick('🖼️' Sreach Foto, event)">
-<div class="card-icon"><img src="https://cdn.simpleicons.org/tiktok/FFFFFF"></div>
-<h2>Sreach Foto</h2>
-<span class="click-count" id="click-tiktok">🔥 Dipencet: 3,120 kali</span>
-</a>
-<a href="iqc.html" class="card" onclick="registerClick('📸 Fake Iphone', event)">
-<div class="card-icon"><img src="https://cdn.simpleicons.org/apple/FFFFFF"></div>
-<h2>Fake Iphone</h2>
-<span class="click-count" id="click-iqc">🔥 Dipencet: 512 kali</span>
-</a>
-<a href="FakeML.html" class="card" onclick="registerClick('🖼️ Fake ML', event)">
-<div class="card-icon"><img src="https://www.google.com/s2/favicons?sz=128&domain=mobilelegends.com" style="width:26px;height:26px;"></div>
-<h2>Fake ML</h2>
-<span class="click-count" id="click-fakeml">🔥 Dipencet: 1,829 kali</span>
-</a>
-<a href="fakelobbyML.html" class="card" onclick="registerClick('🖼️ Fake Lobby ML', event)">
-<div class="card-icon"><img src="https://www.google.com/s2/favicons?sz=128&domain=mobilelegends.com" style="width:26px;height:26px;"></div>
-<h2>Fake Lobby ML</h2>
-<span class="click-count" id="click-lobbyml">🔥 Dipencet: 923 kali</span>
-</a>
-<a href="FakeFF.html" class="card" onclick="registerClick('🖼️ Fake FF', event)">
-<div class="card-icon"><img src="https://www.google.com/s2/favicons?sz=128&domain=ff.garena.com" style="width:26px;height:26px;"></div>
-<h2>Fake FF</h2>
-<span class="click-count" id="click-fakeff">🔥 Dipencet: 741 kali</span>
-</a>
-<a href="fakeustadz.html" class="card" onclick="registerClick('👳‍♂️ Fake Pak Ustadz', event)">
-<div class="card-icon">🕌</div>
-<h2>Fake Pak Ustadz</h2>
-<span class="click-count" id="click-ustadz">🔥 Dipencet: 310 kali</span>
-</a>
-<a href="fakenokia.html" class="card" onclick="registerClick('📱 Fake Nokia', event)">
-<div class="card-icon">📱</div>
-<h2>Fake Nokia</h2>
-<span class="click-count" id="click-nokia">🔥 Dipencet: 310 kali</span>
-</a>
-<a href="claudeai.html" class="card" onclick="registerClick('🤖 Claude Ai', event)">
-<div class="card-icon"><img src="https://cdn.simpleicons.org/anthropic/D97757"></div>
-<h2>Claude Ai</h2>
-<span class="click-count" id="click-claude">🔥 Dipencet: 654 kali</span>
-</a>
-<a href="pinterest-downloader.html" class="card" onclick="registerClick('✨ Search Wallpaper/PP', event)">
-<div class="card-icon"><img src="https://cdn.simpleicons.org/pinterest/E60023"></div>
-<h2>Search Wallpaper/PP</h2>
-<span class="click-count" id="click-pinterest">🔥 Dipencet: 1,180 kali</span>
-</a>
-<a href="encscript.html" class="card" onclick="registerClick('🔐 Enc Script', event)">
-<div class="card-icon">🔑</div>
-<h2>Enc Script</h2>
-<span class="click-count" id="click-enc">🔥 Dipencet: 234 kali</span>
-</a>
-<a href="email.html" class="card" onclick="registerClick('📩 Generate Email', event)">
-<div class="card-icon"><img src="https://cdn.simpleicons.org/google/4285F4"></div>
-<h2>Generate Email</h2>
-<span class="click-count" id="click-email">🔥 Dipencet: 890 kali</span>
-</a>
-<a href="hdfoto.html" class="card" onclick="registerClick('🖼️ HD Image', event)">
-<div class="card-icon"><img src="https://www.google.com/s2/favicons?sz=64&domain=remini.ai" style="width:26px;height:26px;"></div>
-<h2>HD Image</h2>
-<span class="click-count" id="click-hd">🔥 Dipencet: 2,045 kali</span>
-</a>
-<a href="fakestory.html" class="card" onclick="registerClick('💫 Fake Story', event)">
-<div class="card-icon">📷</div>
-<h2>Fake Story</h2>
-<span class="click-count" id="click-story">🔥 Dipencet: 519 kali</span>
-</a>
-<a href="fakegrup.html" class="card" onclick="registerClick('🖼️ Fake Grup', event)">
-<div class="card-icon">👥</div>
-<h2>Fake Grup</h2>
-<span class="click-count" id="click-grup">🔥 Dipencet: 412 kali</span>
-</a>
-<a href="get.html" class="card" onclick="registerClick('📊 Html Fitur', event)">
-<div class="card-icon"><img src="https://cdn.simpleicons.org/html5/E34F26"></div>
-<h2>Html Fitur</h2>
-<span class="click-count" id="click-html">🔥 Dipencet: 156 kali</span>
-</a>
-</div>
-
-<!-- TRUST STRIP -->
 <div class="trust">
-<div class="trust-item">
-<div class="trust-num">18+</div>
-<div class="trust-label">Tools Aktif</div>
-</div>
-<div class="trust-item">
-<div class="trust-num">24/7</div>
-<div class="trust-label">Selalu Online</div>
-</div>
-<div class="trust-item">
-<div class="trust-num">100%</div>
-<div class="trust-label">Gratis Dipakai</div>
-</div>
+<div><div class="num">25+</div><div class="lbl">Tools Aktif</div></div>
+<div><div class="num">24/7</div><div class="lbl">Selalu Online</div></div>
+<div><div class="num">100%</div><div class="lbl">Gratis Dipakai</div></div>
 </div>
 
-<!-- FOOTER -->
-<div class="footer">
-<div class="footer-brand">RafaXMods</div>
-<div class="footer-text">
-© 2026 RafaXMods — Dukung kami dengan join Saluran WhatsApp & Telegram
-</div>
-</div>
-
-</div>
+<footer class="footer">
+<b>RafaXMods</b>
+<p>© 2026 RafaXMods — Dukung kami dengan join Saluran WhatsApp & Telegram</p>
+</footer>
+</main>
 
 <script>
+const S='https://cdn.simpleicons.org/';
+/* [link, nama, ikon, id, jumlah awal, label notif] */
+const F=[
+['list.html','List Jualan',S+'shopify/95BF47','list',1204,'🛒 List Jualan'],
+['music.html','Search Music',S+'soundcloud/FF5500','music',843,'🎧 Search Music'],
+['play-YouTube.html','Play YouTube',S+'youtube/FF0000','youtube',2110,'▶️ Play YouTube'],
+['play-spotify.html','Play Spotify',S+'spotify/1DB954','spotify',2000,'▶️ Play Spotify'],
+['amprem.html','Alight Motion','https://kimi-web-img.kimi.ai/img/www.freeiconspng.com/f13d343f0154cde94819e554bca6891f32f69eb6.png','alight',5000,'✅ Am Premium'],
+['waifu.html','Waifu Generator',S+'starship/2563ff','waifu',1230,'🎨 Waifu Generator'],
+['remove.html','Remove Background',S+'removedotbg/2563ff','removebg',500,'🖼️ Remove Background'],
+['wink.html','Wink Foto Enhancer','https://wink.ai/favicon.ico','wink',700,'✨ Wink Foto Enhancer'],
+['ig.html','IG Download',S+'instagram/E4405F','ig',1432,'📥 IG Download'],
+['tiktok.html','TikTok Downloader',S+'tiktok/000000','tiktok',3490,'🎵 TikTok Downloader'],
+['tiktokphotosearch.html','Sreach Foto',S+'tiktok/000000','tiktokfoto',3120,'🖼️ Sreach Foto'],
+['iqc.html','Fake Iphone',S+'apple/000000','iqc',512,'📸 Fake Iphone'],
+['FakeML.html','Fake ML','https://www.google.com/s2/favicons?sz=128&domain=mobilelegends.com','fakeml',1829,'🖼️ Fake ML'],
+['fakelobbyML.html','Fake Lobby ML','https://www.google.com/s2/favicons?sz=128&domain=mobilelegends.com','lobbyml',923,'🖼️ Fake Lobby ML'],
+['FakeFF.html','Fake FF','https://www.google.com/s2/favicons?sz=128&domain=ff.garena.com','fakeff',741,'🖼️ Fake FF'],
+['fakeustadz.html','Fake Pak Ustadz','🕌','ustadz',310,'👳‍♂️ Fake Pak Ustadz'],
+['fakenokia.html','Fake Nokia','📱','nokia',310,'📱 Fake Nokia'],
+['claudeai.html','Claude Ai',S+'anthropic/D97757','claude',654,'🤖 Claude Ai'],
+['pinterest-downloader.html','Search Wallpaper/PP',S+'pinterest/E60023','pinterest',1180,'✨ Search Wallpaper/PP'],
+['encscript.html','Enc Script','🔑','enc',234,'🔐 Enc Script'],
+['email.html','Generate Email',S+'google/4285F4','email',890,'📩 Generate Email'],
+['hdfoto.html','HD Image','https://www.google.com/s2/favicons?sz=64&domain=remini.ai','hd',2045,'🖼️ HD Image'],
+['fakestory.html','Fake Story','📷','story',519,'💫 Fake Story'],
+['fakegrup.html','Fake Grup','👥','grup',412,'🖼️ Fake Grup'],
+['get.html','Html Fitur',S+'html5/E34F26','html',156,'📊 Html Fitur']
+];
+const fmt=n=>parseInt(n).toLocaleString('id-ID');
+const clicks=id=>localStorage.getItem('click_'+id);
+const grid=document.getElementById('grid');
+grid.innerHTML=F.map(f=>{
+  const icon=f[2].startsWith('http')?`<img src="${f[2]}" alt="" loading="lazy">`:f[2];
+  const c=clicks(f[3])||f[4];
+  return `<a href="${f[0]}" class="card" data-id="${f[3]}" data-label="${f[5]}"><div class="card-icon">${icon}</div><h2>${f[1]}</h2><span class="click-count">🔥 Dipencet: ${fmt(c)} kali</span></a>`;
+}).join('');
+F.forEach(f=>{if(!clicks(f[3]))localStorage.setItem('click_'+f[3],f[4])});
+
+grid.addEventListener('click',e=>{
+  const card=e.target.closest('.card');if(!card)return;
+  const id=card.dataset.id,n=(parseInt(clicks(id))||0)+1;
+  localStorage.setItem('click_'+id,n);
+  card.querySelector('.click-count').textContent='🔥 Dipencet: '+fmt(n)+' kali';
+  const nt=document.getElementById('clickNotif');
+  nt.textContent='⚡ Seseorang baru saja membuka fitur [ '+card.dataset.label+' ]';
+  nt.classList.add('show');setTimeout(()=>nt.classList.remove('show'),2500);
+});
+
+/* TILT 3D kartu fitur */
+grid.addEventListener('pointermove',e=>{
+  if(e.pointerType!=='mouse')return;
+  const t=e.target.closest('.card');if(!t)return;
+  const r=t.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+  t.style.setProperty('--rx',((.5-y)*14)+'deg');t.style.setProperty('--ry',((x-.5)*16)+'deg');
+  t.style.setProperty('--mx',x*100+'%');t.style.setProperty('--my',y*100+'%');
+});
+grid.addEventListener('pointerleave',e=>{
+  if(e.target.classList&&e.target.classList.contains('card')){e.target.style.removeProperty('--rx');e.target.style.removeProperty('--ry')}
+},true);
+
+/* TILT 3D video hero */
+(function(){
+  const st=document.getElementById('stage'),fr=document.getElementById('frame');
+  st.addEventListener('pointermove',e=>{
+    if(e.pointerType!=='mouse')return;
+    const r=st.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+    fr.style.setProperty('--rx',((.5-y)*16)+'deg');fr.style.setProperty('--ry',((x-.5)*22)+'deg');
+  });
+  st.addEventListener('pointerleave',()=>{fr.style.removeProperty('--rx');fr.style.removeProperty('--ry')});
+})();
+
 /* SIDEBAR */
-function toggleMenu(){
-document.getElementById("sidebar").classList.toggle("active");
-}
+function toggleMenu(){document.getElementById('sidebar').classList.toggle('active')}
+document.querySelectorAll('[role=button]').forEach(b=>b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();b.click()}}));
 
 /* CLOCK */
 function updateClock(){
-const now = new Date();
-let h = now.getHours().toString().padStart(2,'0');
-let m = now.getMinutes().toString().padStart(2,'0');
-let s = now.getSeconds().toString().padStart(2,'0');
-document.getElementById("clock").innerHTML = `${h}:${m}:${s} WIB`;
+  const d=new Date(),p=n=>String(n).padStart(2,'0');
+  document.getElementById('clock').textContent=`${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())} WIB`;
 }
-setInterval(updateClock,1000);
-updateClock();
+setInterval(updateClock,1000);updateClock();
 
 /* MUSIC */
-const music = document.getElementById("music");
-function toggleMusic(){
-if(music.paused){
-music.play();
-}else{
-music.pause();
-}
-}
+const music=document.getElementById('music');
+function toggleMusic(){music.paused?music.play().catch(()=>{}):music.pause()}
+document.addEventListener('pointerdown',()=>{if(music.paused)music.play().catch(()=>{})},{once:true});
 
 /* TYPING */
-const text = "Website modern RafaXMods siap melayani kebutuhan kamu";
-let i = 0;
-function typing(){
-if(i < text.length){
-document.getElementById("typing").innerHTML += text.charAt(i);
-i++;
-setTimeout(typing,45);
-}
-}
-typing();
+const text='Website modern RafaXMods siap melayani kebutuhan kamu';let i=0;
+(function typing(){if(i<text.length){document.getElementById('typing').textContent+=text.charAt(i++);setTimeout(typing,45)}})();
 
 /* TIMER IKLAN */
-let timeLeft = 8;
-const timer = document.getElementById("adsTimer");
-const countdown = setInterval(()=>{
-timeLeft--;
-timer.innerHTML = timeLeft;
-if(timeLeft <= 0){
-clearInterval(countdown);
-timer.innerHTML = "✔";
-}
-},1000);
-
-/* CLOSE IKLAN */
-function closeAds(){
-document.getElementById("adsPopup").style.display = "none";
-}
+let timeLeft=8;const timer=document.getElementById('adsTimer');
+const countdown=setInterval(()=>{timeLeft--;timer.textContent=timeLeft;if(timeLeft<=0){clearInterval(countdown);timer.textContent='✔'}},1000);
+function closeAds(){document.getElementById('adsPopup').style.display='none'}
 
 /* VISITOR */
-let baseVisitor = localStorage.getItem('rafa_total_visitors');
-if (!baseVisitor) {
-    baseVisitor = 238492;
-} else {
-    baseVisitor = parseInt(baseVisitor);
-}
-const addedVisitor = Math.floor(Math.random() * 3) + 1;
-baseVisitor += addedVisitor;
-localStorage.setItem('rafa_total_visitors', baseVisitor);
-document.getElementById('visitorDisplay').innerHTML = `💠 Total Melihat : ${baseVisitor.toLocaleString('id-ID')}`;
-
-/* CLICK FITUR */
-const featuresList = [
-    {id: 'list', base: 1204}, {id: 'music', base: 843}, {id: 'youtube', base: 2110},
-    {id: 'ig', base: 1432}, {id: 'tiktok', base: 3490}, {id: 'iqc', base: 512},
-    {id: 'fakeml', base: 1829}, {id: 'lobbyml', base: 923}, {id: 'fakeff', base: 741},
-    {id: 'ustadz', base: 310}, {id: 'claude', base: 654}, {id: 'pinterest', base: 1180},
-    {id: 'enc', base: 234}, {id: 'email', base: 890}, {id: 'hd', base: 2045},
-    {id: 'story', base: 519}, {id: 'grup', base: 412}, {id: 'html', base: 156}
-];
-
-featuresList.forEach(item => {
-    let currentClicks = localStorage.getItem(`click_${item.id}`);
-    if (!currentClicks) {
-        currentClicks = item.base;
-        localStorage.setItem(`click_${item.id}`, currentClicks);
-    }
-    const el = document.getElementById(`click-${item.id}`);
-    if(el) el.innerText = `🔥 Dipencet: ${parseInt(currentClicks).toLocaleString('id-ID')} kali`;
-});
-
-function registerClick(featureName, event) {
-    let target = event.currentTarget;
-    let clickSpan = target.querySelector('.click-count');
-    let id = clickSpan.id.replace('click-', '');
-
-    let clicks = parseInt(localStorage.getItem(`click_${id}`)) || 0;
-    clicks += 1;
-    localStorage.setItem(`click_${id}`, clicks);
-    clickSpan.innerText = `🔥 Dipencet: ${clicks.toLocaleString('id-ID')} kali`;
-
-    const notif = document.getElementById('clickNotif');
-    notif.innerText = `⚡ Seseorang baru saja membuka fitur [ ${featureName} ]`;
-    notif.classList.add('show');
-
-    setTimeout(() => {
-        notif.classList.remove('show');
-    }, 2500);
-}
+let base=parseInt(localStorage.getItem('rafa_total_visitors'))||238492;
+base+=Math.floor(Math.random()*3)+1;
+localStorage.setItem('rafa_total_visitors',base);
+document.getElementById('visitorDisplay').textContent='💠 Total Melihat : '+base.toLocaleString('id-ID');
 </script>
-
 </body>
 </html>

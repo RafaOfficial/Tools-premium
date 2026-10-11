@@ -101,19 +101,18 @@ background:linear-gradient(135deg,var(--blue-2),var(--blue));box-shadow:0 14px 2
 .sec-head{margin:56px 0 22px;text-align:center}
 .sec-title{font-size:clamp(22px,4vw,32px);font-weight:800}
 .sec-sub{margin-top:8px;color:var(--body);font-size:15px}
-.container{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px;perspective:1000px}
+.container{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px}
 .card{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 16px 20px;text-align:center;text-decoration:none;color:var(--ink);
-background:linear-gradient(160deg,#fff,var(--ice));border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);transform-style:preserve-3d;
-transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .3s var(--ease),box-shadow .3s}
+background:linear-gradient(160deg,#fff,var(--ice));border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);transition:box-shadow .3s}
 .card:hover{box-shadow:0 30px 50px -18px rgba(37,99,255,.45)}
 .card::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;
 background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.95),transparent 55%)}
 .card:hover::after{opacity:.8}
 .card-icon{width:62px;height:62px;display:grid;place-items:center;border-radius:20px;font-size:28px;background:#fff;border:1px solid var(--line);
-box-shadow:0 14px 22px -10px rgba(37,99,255,.45);transform:translateZ(38px)}
+box-shadow:0 14px 22px -10px rgba(37,99,255,.45)}
 .card-icon img{width:32px;height:32px;object-fit:contain;border-radius:8px}
-.card h2{font-size:15.5px;font-weight:700;transform:translateZ(22px)}
-.click-count{font-size:12px;font-weight:600;color:var(--blue);background:var(--sky);padding:5px 11px;border-radius:99px;transform:translateZ(14px)}
+.card h2{font-size:15.5px;font-weight:700}
+.click-count{font-size:12px;font-weight:600;color:var(--blue);background:var(--sky);padding:5px 11px;border-radius:99px}
 
 /* TRUST */
 .trust{margin:56px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}

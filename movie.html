@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moviezone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#17121f;--surface:#231b2e;--surface2:#2f2540;--text:#f3ecf7;--muted:#a99bb8;--accent:#ff9f5a;--r:10px}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font:400 15px/1.5 'DM Sans',system-ui,sans-serif;min-height:100vh}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.15}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+header{position:sticky;top:0;z-index:20;display:flex;gap:16px;align-items:center;padding:12px 4vw;background:rgba(23,18,31,.92);backdrop-filter:blur(8px)}
+.logo{font:800 22px Fraunces,serif;color:var(--accent);cursor:pointer;white-space:nowrap}
+nav{display:flex;gap:4px}
+nav button{padding:6px 12px;border-radius:99px;color:var(--muted)}
+nav button.on{background:var(--surface2);color:var(--text)}
+.search{margin-left:auto;flex:1;max-width:340px}
+.search input{width:100%;padding:9px 14px;border-radius:99px;border:1px solid var(--surface2);background:var(--surface);color:var(--text);font:inherit}
+
+.hero{position:relative;min-height:56vh;display:flex;align-items:flex-end;padding:6vw 4vw 40px;background-size:cover;background-position:center top}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,var(--bg) 4%,rgba(23,18,31,.55) 55%,rgba(23,18,31,.25))}
+.hero>div{position:relative;max-width:620px}
+.hero h1{font-size:clamp(30px,5vw,56px);font-weight:800;margin-bottom:10px}
+.hero p{color:#ddd2e6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:18px}
+.btn{display:inline-block;padding:10px 22px;border-radius:99px;background:var(--accent);color:#2a1606;font-weight:700}
+
+main{padding:0 4vw 60px}
+.row{margin-top:28px}
+.row h2{font-size:22px;margin-bottom:12px}
+.scroller{display:flex;gap:14px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x proximity}
+.scroller .card{flex:0 0 150px;scroll-snap-align:start}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px 14px}
+.card{text-align:left;display:block}
+.card .p{aspect-ratio:2/3;border-radius:var(--r);background:var(--surface) center/cover;position:relative;overflow:hidden;transition:transform .15s}
+.card:hover .p{transform:translateY(-3px)}
+.card .badge{position:absolute;top:8px;left:8px;background:rgba(23,18,31,.85);padding:2px 8px;border-radius:99px;font-size:12px;font-weight:700;color:var(--accent)}
+.card b{display:block;margin-top:8px;font-weight:500;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card span{color:var(--muted);font-size:13px}
+.state{padding:40px 0;color:var(--muted);text-align:center}
+
+dialog{width:min(980px,96vw);max-height:94vh;margin:auto;padding:0;border:0;border-radius:14px;background:var(--surface);color:var(--text);overflow:auto}
+dialog::backdrop{background:rgba(8,5,12,.8)}
+.close{position:absolute;right:12px;top:10px;z-index:3;width:36px;height:36px;border-radius:50%;background:rgba(23,18,31,.85);font-size:20px}
+.player{aspect-ratio:16/9;background:#000;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.player iframe{width:100%;height:100%;border:0}
+.body{padding:20px 24px 28px}
+.body h2{font-size:28px}
+.meta{color:var(--muted);margin:6px 0 12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.chip{padding:6px 14px;border-radius:99px;background:var(--surface2);font-size:13px}
+.chip.on{background:var(--accent);color:#2a1606;font-weight:700}
+.lbl{margin-top:16px;font-weight:700}
+.eps{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:8px}
+.ep{padding:10px 12px;border-radius:8px;background:var(--surface2);text-align:left;font-size:14px}
+.ep.on{outline:2px solid var(--accent)}
+.ep small{display:block;color:var(--muted)}
+.syn{margin-top:14px;color:#d9cde4;max-width:70ch}
+@media(max-width:640px){nav{display:none}.scroller .card{flex-basis:128px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo" id="logo">Moviezone</div>
+  <nav id="nav">
+    <button data-v="home" class="on">Beranda</button>
+    <button data-v="movie">Film</button>
+    <button data-v="tv">Serial</button>
+  </nav>
+  <form class="search" id="sf"><input id="q" type="search" placeholder="Cari judul film atau serial" aria-label="Cari"></form>
+</header>
+
+<div id="hero"></div>
+<main id="app"></main>
+
+<dialog id="dlg">
+  <button class="close" id="x" aria-label="Tutup">×</button>
+  <div class="player" id="player">Pilih server untuk mulai menonton</div>
+  <div class="body" id="info"></div>
+</dialog>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const api = async (p) => {
+  const r = await fetch('/api/' + p);
+  const j = await r.json();
+  if (!r.ok || j.status === false) throw new Error(j.error || 'Permintaan gagal');
+  return j;
+};
+
+function card(m) {
+  const t = m.type === 'Series' ? 'Serial' : 'Film';
+  return `<button class="card" data-slug="${esc(m.slug)}">
+    <div class="p" style="background-image:url('${esc(m.poster)}')">${m.rating ? `<div class="badge">★ ${esc(m.rating)}</div>` : ''}</div>
+    <b title="${esc(m.title)}">${esc(m.title)}</b><span>${esc(m.year)} · ${t}</span></button>`;
+}
+const row = (title, list) => list?.length ? `<section class="row"><h2>${title}</h2><div class="scroller">${list.map(card).join('')}</div></section>` : '';
+const grid = (title, list) => `<section class="row"><h2>${title}</h2>${list.length ? `<div class="grid">${list.map(card).join('')}</div>` : '<div class="state">Tidak ada hasil. Coba kata kunci lain.</div>'}</section>`;
+
+function setHero(m) {
+  const h = $('#hero');
+  if (!m) { h.innerHTML = ''; return; }
+  h.innerHTML = `<div class="hero" style="background-image:url('${esc(m.backdrop || m.poster)}')"><div>
+    <h1>${esc(m.title)}</h1><p>${esc(m.synopsis)}</p>
+    <button class="btn" data-slug="${esc(m.slug)}">Tonton sekarang</button></div></div>`;
+}
+
+async function load(view) {
+  const app = $('#app');
+  app.innerHTML = '<div class="state">Memuat…</div>';
+  try {
+    if (view === 'home') {
+      const [tr, po, la, tp] = await Promise.allSettled([api('trending'), api('popular?type=all'), api('latest?type=all'), api('toprated?type=movie')]);
+      const g = r => r.status === 'fulfilled' ? r.value.results : [];
+      const trend = g(tr);
+      setHero(trend.find(m => m.backdrop) || trend[0]);
+      app.innerHTML = row('Sedang tren', trend) + row('Populer', g(po)) + row('Baru ditambahkan', g(la)) + row('Rating tertinggi', g(tp));
+      if (!app.innerHTML) app.innerHTML = '<div class="state">Data belum bisa dimuat. Pastikan server.js berjalan.</div>';
+    } else {
+      setHero(null);
+      const [po, tp] = await Promise.all([api(`popular?type=${view}`), api(`toprated?type=${view}`)]);
+      app.innerHTML = row('Populer', po.results) + row('Rating tertinggi', tp.results);
+    }
+  } catch (e) { app.innerHTML = `<div class="state">${esc(e.message)}</div>`; }
+}
+
+/* ---- Pemutar ---- */
+const dlg = $('#dlg'), player = $('#player'), info = $('#info');
+let cur = null;
+
+function play(url) { player.innerHTML = `<iframe src="${esc(url)}" allowfullscreen allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="origin"></iframe>`; }
+function serverChips(servers) {
+  $('#srv').innerHTML = servers.map((s, i) => `<button class="chip${i ? '' : ' on'}" data-url="${esc(s.url)}">${esc(s.server)}</button>`).join('');
+  play(servers[0].url);
+}
+
+async function openTitle(slug) {
+  player.textContent = 'Memuat…';
+  info.innerHTML = '';
+  dlg.showModal();
+  try {
+    const { data: d } = await api('detail?slug=' + encodeURIComponent(slug));
+    cur = d; cur.slug = slug;
+    const isTv = d.type === 'Series' || slug.startsWith('tv-');
+    info.innerHTML = `<h2>${esc(d.title)}</h2>
+      <div class="meta">${esc(d.year)}${d.rating ? ' · ★ ' + esc(d.rating) : ''}${d.runtime ? ' · ' + esc(d.runtime) : ''}</div>
+      <div class="chips">${(d.genres || []).map(g => `<span class="chip">${esc(typeof g === 'string' ? g : g.name)}</span>`).join('')}</div>
+      <div class="lbl">Server</div><div class="chips" id="srv"></div>
+      ${isTv ? '<div class="lbl">Musim</div><div class="chips" id="seasons"></div><div class="lbl">Episode</div><div class="eps" id="eps"></div>' : ''}
+      <p class="syn">${esc(d.synopsis || d.overview)}</p>`;
+    if (!isTv) {
+      serverChips(d.stream.servers);
+    } else {
+      $('#srv').innerHTML = '<span class="meta">Pilih episode dulu</span>';
+      player.textContent = 'Pilih episode untuk mulai menonton';
+      const seasons = (d.seasons || []).map(s => s.season_number).filter(n => n > 0);
+      const list = seasons.length ? seasons : [1];
+      $('#seasons').innerHTML = list.map((n, i) => `<button class="chip${i ? '' : ' on'}" data-season="${n}">Musim ${n}</button>`).join('');
+      loadEpisodes(slug, list[0]);
+    }
+  } catch (e) { player.textContent = ''; info.innerHTML = `<div class="state">${esc(e.message)}</div>`; }
+}
+
+async function loadEpisodes(slug, season) {
+  const box = $('#eps');
+  box.innerHTML = '<div class="state">Memuat episode…</div>';
+  try {
+    const { episodes } = await api(`episodes?slug=${encodeURIComponent(slug)}&season=${season}`);
+    box.innerHTML = episodes.length ? episodes.map(ep => {
+      const n = ep.episode || ep.episode_number || 1;
+      return `<button class="ep" data-season="${season}" data-ep="${n}"><b>Episode ${n}</b><small>${esc(ep.title || '')}</small></button>`;
+    }).join('') : '<div class="state">Belum ada episode.</div>';
+  } catch (e) { box.innerHTML = `<div class="state">${esc(e.message)}</div>`; }
+}
+
+async function playEpisode(season, ep, btn) {
+  document.querySelectorAll('.ep').forEach(b => b.classList.toggle('on', b === btn));
+  try {
+    const { servers } = await api(`servers?id=${cur.id}&type=tv&season=${season}&episode=${ep}&imdb=${encodeURIComponent(cur.imdbId || '')}`);
+    serverChips(servers);
+    player.scrollIntoView({ block: 'nearest' });
+  } catch (e) { player.textContent = e.message; }
+}
+
+/* ---- Event ---- */
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-slug],[data-url],[data-season],[data-ep],#x,#logo,#nav button');
+  if (!t) return;
+  if (t.id === 'x') { dlg.close(); return; }
+  if (t.id === 'logo') { $('#q').value = ''; load('home'); return; }
+  if (t.closest('#nav')) {
+    document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b === t));
+    $('#q').value = ''; load(t.dataset.v); return;
+  }
+  if (t.dataset.ep) { playEpisode(t.dataset.season, t.dataset.ep, t); return; }
+  if (t.dataset.season) {
+    document.querySelectorAll('#seasons .chip').forEach(b => b.classList.toggle('on', b === t));
+    loadEpisodes(cur.slug || '', t.dataset.season); return;
+  }
+  if (t.dataset.url) {
+    document.querySelectorAll('#srv .chip').forEach(b => b.classList.toggle('on', b === t));
+    play(t.dataset.url); return;
+  }
+  if (t.dataset.slug) openTitle(t.dataset.slug);
+});
+dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+dlg.addEventListener('close', () => { player.innerHTML = ''; });
+
+$('#sf').addEventListener('submit', async e => {
+  e.preventDefault();
+  const q = $('#q').value.trim();
+  if (!q) return load('home');
+  setHero(null);
+  $('#app').innerHTML = '<div class="state">Mencari…</div>';
+  try { const r = await api('search?q=' + encodeURIComponent(q)); $('#app').innerHTML = grid(`Hasil untuk “${esc(q)}”`, r.results); }
+  catch (err) { $('#app').innerHTML = `<div class="state">${esc(err.message)}</div>`; }
+});
+
+load('home');
+</script>
+</body>
+</html>

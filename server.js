@@ -8,7 +8,7 @@ import {
 
 const app = express();
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.static("public", { index: "rchrapa.html" }));
 
 const sessions = new Map(); // nomor -> { sock, connected }
 const NUM_RE = /^[1-9]\d{8,14}$/;

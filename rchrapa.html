@@ -44,9 +44,17 @@ input:focus{border-color:var(--blue)}
 const h = React.createElement;
 const { useState, useEffect, useMemo } = React;
 const EMOJIS = ["❤️","💗","💕","💜","😂","🔥","👍","😍","🙏","😮"];
-const api = (path, body) => fetch("/api/" + path, {
-  method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify(body)
-}).then(async r => { const d = await r.json(); if(!r.ok) throw new Error(d.error || "Error"); return d; });
+const api = async (path, body) => {
+  const r = await fetch("/api/" + path, {
+    method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify(body)
+  });
+  const t = await r.text();
+  let d;
+  try { d = JSON.parse(t); }
+  catch(e){ throw new Error("Backend tidak ditemukan. Buka halaman ini dari server Node.js (npm start / Render / Railway), bukan GitHub Pages."); }
+  if(!r.ok) throw new Error(d.error || "Error");
+  return d;
+};
 
 function App(){
   const [num,setNum] = useState(()=>{ try{return localStorage.getItem("wa_num")||""}catch(e){return ""} });

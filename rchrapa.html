@@ -44,14 +44,16 @@ input:focus{border-color:var(--blue)}
 const h = React.createElement;
 const { useState, useEffect, useMemo } = React;
 const EMOJIS = ["❤️","💗","💕","💜","😂","🔥","👍","😍","🙏","😮"];
+// GANTI dengan alamat backend Render kamu, tanpa garis miring di akhir
+const API_BASE = "https://GANTI-INI.onrender.com";
 const api = async (path, body) => {
-  const r = await fetch("/api/" + path, {
+  const r = await fetch(API_BASE + "/api/" + path, {
     method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify(body)
   });
   const t = await r.text();
   let d;
   try { d = JSON.parse(t); }
-  catch(e){ throw new Error("Backend tidak ditemukan. Buka halaman ini dari server Node.js (npm start / Render / Railway), bukan GitHub Pages."); }
+  catch(e){ throw new Error("Backend tidak ditemukan. Cek API_BASE di rchrapa.html, harus berisi alamat backend Render kamu yang sedang aktif."); }
   if(!r.ok) throw new Error(d.error || "Error");
   return d;
 };
@@ -78,7 +80,7 @@ function App(){
     let stop=false;
     const tick = async()=>{
       try{
-        const d = await (await fetch("/api/status?number="+cleanNum)).json();
+        const d = await (await fetch(API_BASE+"/api/status?number="+cleanNum)).json();
         if(!stop){ setConnected(d.connected); if(d.connected) setCode(""); }
       }catch(e){}
     };

@@ -8,7 +8,23 @@ import {
 
 const app = express();
 app.use(express.json());
-app.use(express.static("public", { index: "rchrapa.html" }));
+const ALLOWED = [
+  "https://www.rafaofficial.my.id",
+  "https://rafaofficial.my.id",
+  ...(process.env.ALLOWED_ORIGINS || "").split(",").filter(Boolean)
+];
+app.use((req, res, next) => {
+  const o = req.headers.origin;
+  if (ALLOWED.includes(o)) {
+    res.setHeader("Access-Control-Allow-Origin", o);
+    res.setHeader("Vary", "Origin");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  }
+  if (req.method === "OPTIONS") return res.sendStatus(204);
+  next();
+});
+app.get("/", (req, res) => res.send("Backend aktif"));
 
 const sessions = new Map(); // nomor -> { sock, connected }
 const NUM_RE = /^[1-9]\d{8,14}$/;

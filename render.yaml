@@ -3,6 +3,7 @@ services:
     name: rchrapa
     runtime: node
     plan: free
+    rootDir: rch-server
     buildCommand: npm install
     startCommand: npm start
     envVars:
